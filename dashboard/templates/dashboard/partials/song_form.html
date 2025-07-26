@@ -1,0 +1,22 @@
+{% load crispy_forms_tags %}
+
+<form id="dashboard-song-form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {{ form|crispy }}
+    
+    <div class="mt-4 d-flex justify-content-between">
+        <button type="button" class="btn btn-outline-secondary" id="cancel-submission">
+            <i class="fas fa-times me-2"></i> Cancel
+        </button>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-paper-plane me-2"></i> Submit Song
+        </button>
+    </div>
+</form>
+
+<!-- Hidden payment redirect form -->
+<form id="payment-redirect-form" class="payment-redirect" method="post" action="{% url 'payment:process' %}" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="song_id" id="payment-song-id">
+</form>

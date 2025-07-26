@@ -3,7 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from landing.models import SongSubmission
+from landing.forms import SongSubmissionForm
+from payment.models import Package
 from .models import SupportRequest
 from .forms import SupportRequestForm, ProfileUpdateForm
 
@@ -141,3 +145,57 @@ def profile(request):
     }
     
     return render(request, 'dashboard/profile.html', context)
+
+@login_required
+def dashboard_submit_song(request):
+    form = SongSubmissionForm()
+    packages = Package.objects.filter(is_active=True)
+
+    context = {
+            'form': form,
+            'packages': packages
+    }
+
+    return render(request, 'dashboard/submit_song.html', context)
+
+@login_required
+def ajax_submit_song(request):
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        form = SongSubmissionForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                submission = form.save(commit=False)
+                submission.user = request.user
+                submission.save()
+
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Your song has been submitted successfully! Redirecting to payment...',
+                    'song_id': submission.id
+                })
+            except Exception as e:
+                import traceback
+                print(traceback.format_exc())
+                return JsonResponse({
+                    'success': False,
+                    'message': f'An error occurred while saving your submission: {str(e)}'
+                }, status=500)
+        else:
+            return JsonResponse({
+                'success': False,
+                'message': 'Please correct the errors below.',
+                'errors': form.errors
+            }, status=400)
+
+    # For GET requests, return the form context for rendering
+    form = SongSubmissionForm()
+    packages = Package.objects.filter(is_active=True)
+
+    # Since we're using AJAX, we'll return a JsonResponse with the initial data
+    return JsonResponse({
+        'success': True,
+        'form_html': render_to_string('dashboard/partials/song_form.html', {
+            'form': form,
+            'packages': packages
+        }, request=request)
+    })

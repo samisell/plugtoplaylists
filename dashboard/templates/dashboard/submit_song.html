@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Submit Your Song - Dashboard{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<style>
+    /* Use the same styling from your index.html and other dashboard pages */
+    .dashboard-container {
+        padding: 30px 0;
+    }
+    
+    /* Page header */
+    .page-header {
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(255, 102, 0, 0.05) 100%);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+    
+    .page-header h1 {
+        margin: 0;
+        color: #ff6600;
+        font-size: 2rem;
+    }
+    
+    /* Form card styling */
+    .form-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .form-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+        padding: 15px 20px;
+        background: linear-gradient(90deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%);
+        border-bottom: 1px solid rgba(255, 102, 0, 0.1);
+        font-weight: bold;
+        color: white;
+    }
+    
+    .card-body {
+        padding: 25px;
+    }
+    
+    /* Button styling */
+    .btn-primary {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
+        background: linear-gradient(45deg, #ff8533, #ff6600);
+    }
+    
+    .btn-outline-secondary {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container container">
+    <div class="page-header">
+        <h1>Submit Your Song</h1>
+    </div>
+    
+    <div class="form-card">
+        <div class="card-header">
+            <i class="fas fa-music me-2"></i> Song Submission Form
+        </div>
+        <div class="card-body">
+            <div id="form-container">
+                {% include 'dashboard/partials/song_form.html' %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a href="{% url 'dashboard:home' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const songForm = document.getElementById('dashboard-song-form');
+        const paymentRedirectForm = document.getElementById('payment-redirect-form');
+        const paymentSongId = document.getElementById('payment-song-id');
+        
+        // Cancel button functionality
+        const cancelButton = document.getElementById('cancel-submission');
+        if (cancelButton) {
+            cancelButton.addEventListener('click', function() {
+                window.location.href = "{% url 'dashboard:home' %}";
+            });
+        }
+        
+        // Form submission handler
+        if (songForm) {
+            songForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                Swal.fire({
+                    title: 'Submitting your song...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                try {
+                    const formData = new FormData(songForm);
+                    
+                    // Get CSRF token
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    
+                    // Send AJAX request
+                    const response = await fetch("{% url 'dashboard:ajax_submit_song' %}", {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': csrfToken
+                        },
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.message,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                        
+                        // Redirect to payment page after delay
+                        setTimeout(() => {
+                            paymentSongId.value = data.song_id;
+                            paymentRedirectForm.submit();
+                        }, 2000);
+                    } else {
+                        // Show error message
+                        let errorMessage = data.message || 'An error occurred';
+                        if (data.errors) {
+                            errorMessage += '<br><br>';
+                            for (const field in data.errors) {
+                                errorMessage += `<strong>${field}:</strong> ${data.errors[field].join(', ')}<br>`;
+                            }
+                        }
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Submission Failed',
+                            html: errorMessage
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An unexpected error occurred. Please try again.'
+                    });
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -268,19 +268,19 @@
             grid-template-columns: 1fr;
         }
     }
-    
+
     /* NEW STYLES FOR PRICING SECTION */
     .pricing {
         background-color: #1a1a1a;
     }
-    
+
     .pricing-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
         margin-top: 3rem;
     }
-    
+
     .pricing-card {
         background: rgba(255, 255, 255, 0.05);
         border-radius: 12px;
@@ -290,41 +290,41 @@
         display: flex;
         flex-direction: column;
     }
-    
+
     .pricing-card:hover {
         transform: translateY(-10px);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
-    
+
     .pricing-card.featured {
         border: 2px solid #ff6600;
         position: relative;
         z-index: 1;
         transform: scale(1.05);
     }
-    
+
     .pricing-card.featured:hover {
         transform: scale(1.05) translateY(-10px);
     }
-    
+
     .pricing-header {
         background: linear-gradient(45deg, rgba(255, 102, 0, 0.2), rgba(255, 102, 0, 0.1));
         padding: 2rem;
         text-align: center;
         border-bottom: 1px solid rgba(255, 102, 0, 0.2);
     }
-    
+
     .pricing-card.featured .pricing-header {
         background: linear-gradient(45deg, rgba(255, 102, 0, 0.8), rgba(255, 102, 0, 0.6));
     }
-    
+
     .pricing-name {
         color: white;
         font-size: 1.8rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
     }
-    
+
     .pricing-price {
         font-size: 3rem;
         font-weight: 800;
@@ -334,11 +334,11 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     .pricing-card.featured .pricing-price {
         color: white;
     }
-    
+
     .pricing-currency {
         font-size: 1.5rem;
         font-weight: 600;
@@ -346,59 +346,59 @@
         align-self: flex-start;
         margin-top: 0.5rem;
     }
-    
+
     .pricing-period {
         font-size: 1rem;
         color: rgba(255, 255, 255, 0.7);
         margin-left: 0.5rem;
         align-self: flex-end;
     }
-    
+
     .pricing-description {
         color: #cccccc;
         margin-bottom: 1rem;
         font-size: 0.9rem;
     }
-    
+
     .pricing-features {
         padding: 2rem;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
     }
-    
+
     .pricing-feature-list {
         list-style: none;
         padding: 0;
         margin: 0 0 2rem 0;
         flex-grow: 1;
     }
-    
+
     .pricing-feature {
         display: flex;
         align-items: center;
         margin-bottom: 1rem;
         color: #cccccc;
     }
-    
+
     .pricing-feature i {
         color: #ff6600;
         margin-right: 0.75rem;
         font-size: 1.1rem;
     }
-    
+
     .pricing-feature.disabled {
         color: rgba(204, 204, 204, 0.5);
     }
-    
+
     .pricing-feature.disabled i {
         color: rgba(255, 102, 0, 0.5);
     }
-    
+
     .pricing-cta {
         text-align: center;
     }
-    
+
     .featured-badge {
         position: absolute;
         top: 0;
@@ -412,12 +412,12 @@
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
+
     @media (max-width: 768px) {
         .pricing-card.featured {
             transform: scale(1);
         }
-        
+
         .pricing-card.featured:hover {
             transform: translateY(-10px);
         }
@@ -437,7 +437,6 @@
                 curators and artists. We are here to help you grow your music by introducing you to a new Audience on
                 Spotify.</p>
             <div class="hero-buttons">
-
                 <a href="#pricing" class="btn btn-primary">View Packages</a>
                 <a href="{% url 'accounts:register' %}" class="btn btn-outline">Get Started</a>
             </div>
@@ -530,7 +529,7 @@
             <h2>Our Packages</h2>
             <p>Choose the perfect package for your music promotion needs</p>
         </div>
-        
+
         <div class="pricing-grid">
             <!-- Basic Package -->
             <div class="pricing-card">
@@ -574,7 +573,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Premium Package -->
             <div class="pricing-card featured">
                 <div class="featured-badge">Most Popular</div>
@@ -618,7 +617,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Pro Package -->
             <div class="pricing-card">
                 <div class="pricing-header">
@@ -804,15 +803,17 @@
                 <div class="faq-answer">We vet all curators and only work with those who have real, engaged audiences
                     and follow Spotify's guidelines.</div>
             </div>
-            
+
             <div class="faq-item">
                 <div class="faq-question">Do I need to create an account to submit my song?</div>
-                <div class="faq-answer">No, you can submit your song without creating an account, but we recommend signing up for a better experience and to track your submissions.</div>
+                <div class="faq-answer">No, you can submit your song without creating an account, but we recommend
+                    signing up for a better experience and to track your submissions.</div>
             </div>
-            
+
             <div class="faq-item">
                 <div class="faq-question">What payment methods do you accept?</div>
-                <div class="faq-answer">We accept credit cards, debit cards, bank transfers, and mobile payments through our secure payment processor.</div>
+                <div class="faq-answer">We accept credit cards, debit cards, bank transfers, and mobile payments through
+                    our secure payment processor.</div>
             </div>
         </div>
     </div>
@@ -874,8 +875,25 @@
                     top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
-            }
 
+        });
+    });
 
-
-
+    // Initialize FAQ items as hidden by default
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.style.display = 'none';
+        });
+        
+        // Make sure pricing section links are working
+        document.querySelectorAll('.pricing-cta .btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // You can add tracking or analytics here if needed
+                console.log('Package selected:', this.closest('.pricing-card').querySelector('.pricing-name').textContent);
+                // The link will naturally redirect to the submission page
+            });
+        });
+    });
+</script>
+{% endblock %} 
+      

@@ -268,6 +268,160 @@
             grid-template-columns: 1fr;
         }
     }
+    
+    /* NEW STYLES FOR PRICING SECTION */
+    .pricing {
+        background-color: #1a1a1a;
+    }
+    
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .pricing-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .pricing-card.featured {
+        border: 2px solid #ff6600;
+        position: relative;
+        z-index: 1;
+        transform: scale(1.05);
+    }
+    
+    .pricing-card.featured:hover {
+        transform: scale(1.05) translateY(-10px);
+    }
+    
+    .pricing-header {
+        background: linear-gradient(45deg, rgba(255, 102, 0, 0.2), rgba(255, 102, 0, 0.1));
+        padding: 2rem;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+    }
+    
+    .pricing-card.featured .pricing-header {
+        background: linear-gradient(45deg, rgba(255, 102, 0, 0.8), rgba(255, 102, 0, 0.6));
+    }
+    
+    .pricing-name {
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .pricing-price {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #ff6600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .pricing-card.featured .pricing-price {
+        color: white;
+    }
+    
+    .pricing-currency {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-right: 0.25rem;
+        align-self: flex-start;
+        margin-top: 0.5rem;
+    }
+    
+    .pricing-period {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-left: 0.5rem;
+        align-self: flex-end;
+    }
+    
+    .pricing-description {
+        color: #cccccc;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .pricing-features {
+        padding: 2rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .pricing-feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 2rem 0;
+        flex-grow: 1;
+    }
+    
+    .pricing-feature {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        color: #cccccc;
+    }
+    
+    .pricing-feature i {
+        color: #ff6600;
+        margin-right: 0.75rem;
+        font-size: 1.1rem;
+    }
+    
+    .pricing-feature.disabled {
+        color: rgba(204, 204, 204, 0.5);
+    }
+    
+    .pricing-feature.disabled i {
+        color: rgba(255, 102, 0, 0.5);
+    }
+    
+    .pricing-cta {
+        text-align: center;
+    }
+    
+    .featured-badge {
+        position: absolute;
+        top: 0;
+        right: 1.5rem;
+        background: #ff6600;
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        border-radius: 0 0 8px 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    @media (max-width: 768px) {
+        .pricing-card.featured {
+            transform: scale(1);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: translateY(-10px);
+        }
+    }
 </style>
 {% endblock %}
 
@@ -283,7 +437,8 @@
                 curators and artists. We are here to help you grow your music by introducing you to a new Audience on
                 Spotify.</p>
             <div class="hero-buttons">
-                <a href="#how-it-works" class="btn btn-primary">How It Works</a>
+
+                <a href="#pricing" class="btn btn-primary">View Packages</a>
                 <a href="{% url 'accounts:register' %}" class="btn btn-outline">Get Started</a>
             </div>
         </div>
@@ -362,6 +517,148 @@
                     <h3>Get Added To Playlists</h3>
                     <p>Watch your streams grow as curators add your music to their playlists, exposing you to thousands
                         of new potential fans.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section (NEW) -->
+<section class="pricing" id="pricing">
+    <div class="container">
+        <div class="section-title">
+            <h2>Our Packages</h2>
+            <p>Choose the perfect package for your music promotion needs</p>
+        </div>
+        
+        <div class="pricing-grid">
+            <!-- Basic Package -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="pricing-name">Basic</div>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">₦</span>
+                        5,000
+                    </div>
+                    <div class="pricing-description">Perfect for new artists testing the waters</div>
+                </div>
+                <div class="pricing-features">
+                    <ul class="pricing-feature-list">
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>1 Song Submission</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>3-5 Playlist Placements</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>1 Month Playlist Guarantee</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Basic Performance Report</span>
+                        </li>
+                        <li class="pricing-feature disabled">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Priority Pitching</span>
+                        </li>
+                        <li class="pricing-feature disabled">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Featured Artist Profile</span>
+                        </li>
+                    </ul>
+                    <div class="pricing-cta">
+                        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Premium Package -->
+            <div class="pricing-card featured">
+                <div class="featured-badge">Most Popular</div>
+                <div class="pricing-header">
+                    <div class="pricing-name">Premium</div>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">₦</span>
+                        15,000
+                    </div>
+                    <div class="pricing-description">Best value for serious artists</div>
+                </div>
+                <div class="pricing-features">
+                    <ul class="pricing-feature-list">
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>1 Song Submission</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>10-15 Playlist Placements</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>3 Months Playlist Guarantee</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Detailed Performance Analytics</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Priority Pitching</span>
+                        </li>
+                        <li class="pricing-feature disabled">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Featured Artist Profile</span>
+                        </li>
+                    </ul>
+                    <div class="pricing-cta">
+                        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pro Package -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="pricing-name">Professional</div>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">₦</span>
+                        30,000
+                    </div>
+                    <div class="pricing-description">Maximum exposure for established artists</div>
+                </div>
+                <div class="pricing-features">
+                    <ul class="pricing-feature-list">
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>2 Song Submissions</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>20+ Playlist Placements</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>6 Months Playlist Guarantee</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Advanced Performance Analytics</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Priority Pitching</span>
+                        </li>
+                        <li class="pricing-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Featured Artist Profile</span>
+                        </li>
+                    </ul>
+                    <div class="pricing-cta">
+                        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -507,6 +804,16 @@
                 <div class="faq-answer">We vet all curators and only work with those who have real, engaged audiences
                     and follow Spotify's guidelines.</div>
             </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Do I need to create an account to submit my song?</div>
+                <div class="faq-answer">No, you can submit your song without creating an account, but we recommend signing up for a better experience and to track your submissions.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">What payment methods do you accept?</div>
+                <div class="faq-answer">We accept credit cards, debit cards, bank transfers, and mobile payments through our secure payment processor.</div>
+            </div>
         </div>
     </div>
 </section>
@@ -568,7 +875,7 @@
                     behavior: 'smooth'
                 });
             }
-        });
-    });
-</script>
-{% endblock %}
+
+
+
+

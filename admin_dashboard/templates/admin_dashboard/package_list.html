@@ -1,0 +1,75 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}Packages | Admin Dashboard{% endblock %}
+
+{% block header_title %}Package Management{% endblock %}
+
+{% block content %}
+<!-- Top actions -->
+<div class="mb-4">
+    <a href="{% url 'admin_dashboard:package_add' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i> Add New Package
+    </a>
+</div>
+
+<!-- Packages Table -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Available Packages</span>
+        <span class="badge bg-secondary">{{ packages.count }} packages</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for package in packages %}
+                    <tr>
+                        <td>{{ package.id }}</td>
+                        <td>{{ package.name }}</td>
+                        <td>{{ package.description|truncatechars:50 }}</td>
+                        <td>₦{{ package.price }}</td>
+                        <td>
+                            {% if package.is_active %}
+                            <span class="badge badge-approved">Active</span>
+                            {% else %}
+                            <span class="badge badge-failed">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ package.created_at|date:"M d, Y" }}</td>
+                        <td>{{ package.updated_at|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{% url 'admin_dashboard:package_edit' package.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'admin_dashboard:package_delete' package.id %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-4">
+                            <p class="text-muted">No packages found. <a href="{% url 'admin_dashboard:package_add' %}">Add your first package</a>.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

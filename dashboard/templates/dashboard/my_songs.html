@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Songs - PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* Main container styles */
+    .dashboard-container {
+        padding: 30px 0;
+    }
+
+    /* Page header */
+    .page-header {
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(255, 102, 0, 0.05) 100%);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        color: #ff6600;
+        font-size: 2rem;
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
+        background: linear-gradient(45deg, #ff8533, #ff6600);
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white;
+        color: white;
+    }
+
+    .btn-outline-primary {
+        color: #ff6600;
+        border-color: rgba(255, 102, 0, 0.5);
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+        border-color: #ff6600;
+    }
+
+    .btn-outline-success {
+        color: #28a745;
+        border-color: rgba(40, 167, 69, 0.5);
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-success:hover {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border-color: #28a745;
+    }
+
+    /* Card styling */
+    .songs-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .songs-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        padding: 15px 20px;
+        background: linear-gradient(90deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%);
+        border-bottom: 1px solid rgba(255, 102, 0, 0.1);
+        font-weight: bold;
+        color: white;
+    }
+
+    /* Table styling */
+    .table {
+        color: #cccccc;
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        border-top: none;
+        border-bottom: 2px solid rgba(255, 102, 0, 0.2);
+        color: #ff6600;
+        font-weight: 600;
+        padding: 15px;
+    }
+
+    .table tbody td {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 102, 0, 0.05);
+    }
+
+    /* Badge styling */
+    .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.8rem;
+    }
+
+    .bg-success {
+        background-color: rgba(40, 167, 69, 0.2) !important;
+        color: #28a745 !important;
+    }
+
+    .bg-warning {
+        background-color: rgba(255, 193, 7, 0.2) !important;
+        color: #ffc107 !important;
+    }
+
+    .bg-danger {
+        background-color: rgba(220, 53, 69, 0.2) !important;
+        color: #dc3545 !important;
+    }
+
+    /* Empty state styling */
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: #cccccc;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: rgba(255, 102, 0, 0.2);
+        margin-bottom: 20px;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container container">
+    <div class="page-header">
+        <h1>My Songs</h1>
+        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle me-2"></i> Submit New Song
+        </a>
+    </div>
+
+    <div class="songs-card">
+        <div class="card-header">
+            <i class="fas fa-music me-2"></i> Song Submissions
+        </div>
+        <div class="card-body p-0">
+            {% if songs %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Song Title</th>
+                            <th>Artist</th>
+                            <th>Genre</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for song in songs %}
+                        <tr>
+                            <td>{{ song.song_title }}</td>
+                            <td>{{ song.artist_name }}</td>
+                            <td>{{ song.get_genre_display }}</td>
+                            <td>{{ song.submission_date|date:"M d, Y" }}</td>
+                            <td>
+                                {% if song.is_approved %}
+                                <span class="badge bg-success">Approved</span>
+                                {% else %}
+                                <span class="badge bg-warning">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if song.payment_status == 'completed' %}
+                                <span class="badge bg-success">Paid</span>
+                                {% elif song.payment_status == 'failed' %}
+                                <span class="badge bg-danger">Failed</span>
+                                {% else %}
+                                <span class="badge bg-warning">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ song.music_link }}" target="_blank"
+                                        class="btn btn-sm btn-outline-primary" title="Play Song">
+                                        <i class="fas fa-play"></i>
+                                    </a>
+                                    {% if song.payment_status != 'completed' %}
+                                    <form action="{% url 'payment:process' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="song_id" value="{{ song.id }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-success"
+                                            title="Make Payment">
+                                            <i class="fas fa-credit-card"></i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-music"></i>
+                <p>You haven't submitted any songs yet.</p>
+                <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Submit Your First Song</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="songs-card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle me-2"></i> Submission Guidelines
+                    </div>
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li class="mb-2">Make sure your song is professionally mixed and mastered</li>
+                            <li class="mb-2">Provide accurate genre information to match with appropriate playlists</li>
+                            <li class="mb-2">Include links to your social media profiles for better visibility</li>
+                            <li class="mb-2">Add a compelling artist bio to help curators understand your music</li>
+                            <li class="mb-2">Complete payment to finalize your submission and be considered for
+                                playlists</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="songs-card h-100">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line me-2"></i> Next Steps
+                    </div>
+                    <div class="card-body">
+                        <p>After submission and payment, here's what happens next:</p>
+                        <ol class="mb-0">
+                            <li class="mb-2">Our team reviews your song (typically within 2-3 business days)</li>
+                            <li class="mb-2">Once approved, we pitch your song to our network of playlist curators</li>
+                            <li class="mb-2">You'll receive notifications when your song is added to playlists</li>
+                            <li class="mb-2">Track your song's performance through our dashboard</li>
+                            <li class="mb-2">We provide detailed reports on playlist additions and stream data</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'dashboard:home' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

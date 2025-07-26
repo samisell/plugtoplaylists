@@ -1,0 +1,102 @@
+/* Auth Pages Styling */
+.auth-container {
+    background: url('/static/images/auth-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-card {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 1200px;
+    overflow: hidden;
+    display: flex;
+}
+
+.auth-illustration {
+    flex: 1;
+    background: url('/static/images/auth-illustration.png') no-repeat center center;
+    background-size: cover;
+    min-height: 600px;
+}
+
+.auth-form-container {
+    flex: 1;
+    padding: 3rem;
+    color: white;
+}
+
+.auth-form-container h2 {
+    color: #ff7b25;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.auth-form-container .form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 12px 15px;
+    margin-bottom: 1.5rem;
+}
+
+.auth-form-container .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(255, 123, 37, 0.25);
+}
+
+.auth-form-container .btn-primary {
+    background-color: #ff7b25;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.auth-form-container .btn-primary:hover {
+    background-color: #e56a1a;
+}
+
+.auth-form-container .btn-link {
+    color: #ff7b25;
+    text-decoration: none;
+}
+
+.auth-form-container .btn-link:hover {
+    color: #e56a1a;
+    text-decoration: underline;
+}
+
+.auth-form-container .form-text {
+    color: #adb5bd !important;
+}
+
+.auth-switch-link {
+    color: #ff7b25;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-switch-link:hover {
+    color: #e56a1a;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .auth-card {
+        flex-direction: column;
+    }
+
+    .auth-illustration {
+        min-height: 300px;
+    }
+}

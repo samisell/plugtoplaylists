@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<style>
+    .dashboard-container {
+        padding: 30px 0;
+    }
+
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+        border-radius: 12px;
+        padding: 20px;
+        color: white;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #ff6600;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .dashboard-sections {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-sections {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .section-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .section-header {
+        padding: 15px 20px;
+        background: linear-gradient(90deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%);
+        border-bottom: 1px solid rgba(255, 102, 0, 0.1);
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .section-content {
+        padding: 20px;
+    }
+
+    .song-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .song-item {
+        padding: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .song-item:last-child {
+        border-bottom: none;
+    }
+
+    .song-info h4 {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .song-info p {
+        margin: 5px 0 0;
+        font-size: 0.85rem;
+        opacity: 0.7;
+    }
+
+    .song-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        background-color: rgba(255, 193, 7, 0.2);
+        color: #ffc107;
+    }
+
+    .status-approved {
+        background-color: rgba(40, 167, 69, 0.2);
+        color: #28a745;
+    }
+
+    .action-links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .action-link {
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%);
+        border: 1px solid rgba(255, 102, 0, 0.2);
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .action-link:hover {
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.2) 0%, rgba(255, 102, 0, 0.1) 100%);
+        transform: translateY(-3px);
+        color: #ff6600;
+    }
+
+    .action-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: #ff6600;
+    }
+
+    .welcome-section {
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(255, 102, 0, 0.05) 100%);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+
+    .welcome-section h1 {
+        margin-top: 0;
+        color: #ff6600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container container">
+    <!-- Welcome section -->
+    <div class="welcome-section">
+        <h1>Welcome, {{ user.username }}!</h1>
+        <p>Manage your songs, track your submissions, and get support from your personal dashboard.</p>
+    </div>
+
+    <!-- Stats section -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <div class="stat-number">{{ songs_count }}</div>
+            <div class="stat-label">Total Submissions</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+            <div class="stat-number">{{ pending_songs }}</div>
+            <div class="stat-label">Pending Review</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-number">{{ approved_songs }}</div>
+            <div class="stat-label">Approved</div>
+        </div>
+    </div>
+
+    <div class="dashboard-sections">
+        <!-- Main content section -->
+        <div class="main-section">
+            <!-- Recent submissions -->
+            <div class="section-card">
+                <div class="section-header">
+                    <span>Recent Submissions</span>
+                    <a href="{% url 'dashboard:my_songs' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="section-content">
+                    {% if recent_submissions %}
+                    <ul class="song-list">
+                        {% for song in recent_submissions %}
+                        <li class="song-item">
+                            <div class="song-info">
+                                <h4>{{ song.song_title }}</h4>
+                                <p>{{ song.artist_name }} • {{ song.get_genre_display }}</p>
+                            </div>
+                            <div>
+                                {% if song.is_approved %}
+                                <span class="song-status status-approved">Approved</span>
+                                {% else %}
+                                <span class="song-status status-pending">Pending</span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <p>You haven't submitted any songs yet.</p>
+                        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Submit Your First Song</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Action links -->
+            <div class="action-links">
+                <a href="{% url 'landing:submit_song' %}" class="action-link">
+                    <div class="action-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div>Submit New Song</div>
+                </a>
+
+                <a href="{% url 'dashboard:my_payments' %}" class="action-link">
+                    <div class="action-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div>View Payments</div>
+                </a>
+
+                <a href="{% url 'dashboard:support' %}" class="action-link">
+                    <div class="action-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div>Get Support</div>
+                </a>
+
+                <a href="{% url 'dashboard:profile' %}" class="action-link">
+                    <div class="action-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <div>Edit Profile</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sidebar content -->
+        <div class="sidebar-section">
+            <!-- Account information -->
+            <div class="section-card">
+                <div class="section-header">
+                    <span>Account Information</span>
+                    <a href="{% url 'dashboard:profile' %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                </div>
+                <div class="section-content">
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    {% if user.first_name or user.last_name %}
+                    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+                    {% endif %}
+                    <div class="mt-3">
+                        <a href="{% url 'password_change' %}" class="btn btn-sm btn-warning">Change Password</a>
+                        <a href="{% url 'logout' %}" class="btn btn-sm btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support section -->
+            {% if support_requests %}
+            <div class="section-card">
+                <div class="section-header">
+                    <span>Recent Support Requests</span>
+                    <a href="{% url 'dashboard:support' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="section-content">
+                    <ul class="song-list">
+                        {% for request in support_requests %}
+                        <li class="song-item">
+                            <div class="song-info">
+                                <h4>{{ request.subject }}</h4>
+                                <p>{{ request.created_at|date:"M d, Y" }}</p>
+                            </div>
+                            <div>
+                                {% if request.status == 'resolved' %}
+                                <span class="song-status status-approved">Resolved</span>
+                                {% else %}
+                                <span class="song-status status-pending">{{ request.get_status_display }}</span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

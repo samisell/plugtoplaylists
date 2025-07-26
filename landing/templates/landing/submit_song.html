@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Submit Your Song | PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<!-- Add SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="{% static 'css/submit_song.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-left">
+        <div class="illustration">
+            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- SVG content remains the same -->
+            </svg>
+            <h2>Submit Your Music</h2>
+            <p>Get your songs in front of thousands of new listeners through our curated playlists</p>
+        </div>
+    </div>
+
+    <div class="auth-right">
+        <div class="auth-header">
+            <h1>Song Submission</h1>
+            <p>Fill out the form to submit your track</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" id="song-submission-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_artist_name">Artist Name</label>
+                <input type="text" name="artist_name" id="id_artist_name" class="form-control"
+                    placeholder="Your artist name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="id_song_title">Song Title</label>
+                <input type="text" name="song_title" id="id_song_title" class="form-control"
+                    placeholder="Your song title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="id_genre">Genre</label>
+                <select name="genre" id="id_genre" class="form-control" required>
+                    <option value="">Select a genre</option>
+                    <option value="pop">Pop</option>
+                    <option value="hiphop">Hip Hop/Rap</option>
+                    <option value="rnb">R&B</option>
+                    <option value="edm">Electronic/Dance</option>
+                    <option value="rock">Rock</option>
+                    <option value="alternative">Alternative</option>
+                    <option value="country">Country</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="classical">Classical</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="id_email">Email Address</label>
+                <input type="email" name="email" id="id_email" class="form-control" placeholder="Your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="id_phone">Phone Number (optional)</label>
+                <input type="tel" name="phone" id="id_phone" class="form-control" placeholder="Your phone number">
+            </div>
+
+            <div class="form-group">
+                <label for="id_social_media">Social Media (Instagram/Twitter)</label>
+                <input type="text" name="social_media" id="id_social_media" class="form-control"
+                    placeholder="@yourhandle">
+            </div>
+
+            <div class="form-group">
+                <label>Music Link</label>
+                <div class="link-type-selector">
+                    <div class="checkbox-group">
+                        <input type="radio" id="spotify-link" name="link_type" value="spotify" checked>
+                        <label for="spotify-link">Spotify</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="radio" id="youtube-link" name="link_type" value="youtube">
+                        <label for="youtube-link">YouTube Music</label>
+                    </div>
+                </div>
+                <div class="link-input-container">
+                    <input type="url" name="music_link" id="id_music_link" class="form-control"
+                        placeholder="Paste your Spotify or YouTube Music link" required>
+                    <button type="button" class="btn-fetch" id="fetch-btn">Fetch</button>
+                </div>
+                <div class="song-details-card" id="song-details-card">
+                    <h4>Fetched Song Details</h4>
+                    <div class="song-details-content">
+                        <img src="" alt="Album cover" class="song-details-img" id="song-details-img">
+                        <div class="song-details-text">
+                            <p><strong>Artist:</strong> <span id="song-details-artist"></span></p>
+                            <p><strong>Title:</strong> <span id="song-details-title"></span></p>
+                            <p><strong>Duration:</strong> <span id="song-details-duration"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_package">Select Package</label>
+                <select name="package" id="id_package" class="form-control" required>
+                    <option value="">Select a package</option>
+                    {% for package in packages %}
+                    <option value="{{ package.id }}" data-price="{{ package.price }}">
+                        {{ package.name }} - ₦{{ package.price }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <small class="form-text text-muted">Choose the package that fits your needs</small>
+            </div>
+
+            <div class="form-group">
+                <div class="file-upload">
+                    <label class="file-upload-label">Or upload your song file (optional)</label>
+                    <input type="file" name="song_file" id="id_song_file" accept="audio/*">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_bio">Artist Bio (optional)</label>
+                <textarea name="bio" id="id_bio" class="form-control" rows="4"
+                    placeholder="Tell us about yourself and your music"></textarea>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the <a href="{% url 'landing:terms_page' %}" class="btn-link">Terms of
+                        Service</a> and <a href="{% url 'landing:privacy_page' %}" class="btn-link">Privacy
+                        Policy</a></label>
+            </div>
+
+            <button type="submit" class="btn-primary">Submit Song</button>
+        </form>
+
+        <!-- Hidden payment redirect form -->
+        <form id="payment-redirect-form" class="payment-redirect" method="post" action="{% url 'payment:process' %}">
+            {% csrf_token %}
+            <input type="hidden" name="song_id" id="payment-song-id">
+            <input type="hidden" name="amount" value="29.99">
+        </form>
+    </div>
+</div>
+
+<!-- Add this script tag to your HTML template, not in a separate .js file -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // DOM Elements
+        const fetchBtn = document.getElementById('fetch-btn');
+        const musicLinkInput = document.getElementById('id_music_link');
+        const linkTypeRadios = document.querySelectorAll('input[name="link_type"]');
+        const songForm = document.getElementById('song-submission-form');
+        const artistNameInput = document.getElementById('id_artist_name');
+        const songTitleInput = document.getElementById('id_song_title');
+        const songDetailsCard = document.getElementById('song-details-card');
+        const songDetailsImg = document.getElementById('song-details-img');
+        const songDetailsArtist = document.getElementById('song-details-artist');
+        const songDetailsTitle = document.getElementById('song-details-title');
+        const songDetailsDuration = document.getElementById('song-details-duration');
+        const paymentRedirectForm = document.getElementById('payment-redirect-form');
+        const paymentSongId = document.getElementById('payment-song-id');
+
+        // Define URLs - Django will process these template tags
+        const FETCH_SONG_DETAILS_URL = '{% url "landing:fetch_song_details" %}';
+        const SUBMIT_SONG_URL = '{% url "landing:submit_song" %}';
+
+        // Load SweetAlert library dynamically if not already loaded
+        if (typeof Swal === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+            script.onload = initializeApp;
+            document.head.appendChild(script);
+        } else {
+            initializeApp();
+        }
+
+        function initializeApp() {
+            // Setup event listeners
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            // Update placeholder based on selected link type
+            linkTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    if (this.value === 'spotify') {
+                        musicLinkInput.placeholder = 'Paste your Spotify link (e.g., https://open.spotify.com/track/...)';
+                    } else {
+                        musicLinkInput.placeholder = 'Paste your YouTube Music link (e.g., https://music.youtube.com/watch?v=...)';
+                    }
+                    songDetailsCard.style.display = 'none';
+                });
+            });
+
+            // Fetch song data when fetch button is clicked
+            fetchBtn.addEventListener('click', async function () {
+                const link = musicLinkInput.value.trim();
+                const linkType = document.querySelector('input[name="link_type"]:checked').value;
+
+                if (!link) {
+                    showAlert('error', 'Oops...', 'Please paste a valid link first!');
+                    return;
+                }
+
+                // Validate URL format
+                if (linkType === 'spotify' && !link.includes('spotify.com/track/')) {
+                    showAlert('error', 'Invalid URL', 'Please enter a valid Spotify track URL (should contain "spotify.com/track/")');
+                    return;
+                }
+                if (linkType === 'youtube' && !(link.includes('youtube.com/watch?v=') || link.includes('youtu.be/'))) {
+                    showAlert('error', 'Invalid URL', 'Please enter a valid YouTube Music URL (should contain "youtube.com/watch?v=" or "youtu.be/")');
+                    return;
+                }
+
+                // Show loading state
+                fetchBtn.textContent = 'Fetching...';
+                fetchBtn.disabled = true;
+                songDetailsCard.style.display = 'none';
+
+                try {
+                    const response = await fetchSongDetails(link, linkType);
+
+                    if (response.success) {
+                        // Auto-fill the form fields
+                        artistNameInput.value = response.data.artist_name || '';
+                        songTitleInput.value = response.data.song_title || '';
+
+                        // Display song details
+                        updateSongDetails(response.data);
+                        showAlert('success', 'Success!', 'Song details fetched successfully!', 2000);
+                    } else {
+                        throw new Error(response.message || 'Could not fetch song details');
+                    }
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    showAlert('error', 'Error', error.message || 'An error occurred while fetching song details. Please check the link and try again.');
+                } finally {
+                    // Reset button
+                    fetchBtn.textContent = 'Fetch';
+                    fetchBtn.disabled = false;
+                }
+            });
+
+            // Form submission handler
+            songForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const termsChecked = document.getElementById('terms').checked;
+                if (!termsChecked) {
+                    showAlert('error', 'Required', 'You must agree to the terms and conditions');
+                    return;
+                }
+
+                try {
+                    const response = await submitSongForm();
+
+                    if (response.success) {
+                        // Show success message and redirect to payment after delay
+                        showAlert('success', 'Success!', response.message, 3000);
+                        setTimeout(() => {
+                            paymentSongId.value = response.song_id;
+                            paymentRedirectForm.submit();
+                        }, 3000);
+                    } else {
+                        let errorMessage = response.message || 'There was an error submitting your song. Please try again.';
+                        if (response.errors) {
+                            errorMessage += '\n\n' + Object.values(response.errors).join('\n');
+                        }
+                        showAlert('error', 'Submission Failed', errorMessage);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.close(); // Close any loading dialogs
+                    showAlert('error', 'Error', error.message || 'An error occurred while submitting your song.');
+                }
+            });
+        }
+
+        // API Functions
+        async function fetchSongDetails(link, linkType) {
+            const csrftoken = getCookie('csrftoken');
+            const response = await fetch(FETCH_SONG_DETAILS_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: new URLSearchParams({
+                    'link': link,
+                    'link_type': linkType
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return await response.json();
+        }
+
+        async function submitSongForm() {
+            const csrftoken = getCookie('csrftoken');
+            const formData = new FormData(songForm);
+
+            showLoading('Submitting your song...');
+
+            try {
+                const response = await fetch(SUBMIT_SONG_URL, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'X-Requested-With': 'XMLHttpRequest'  // Identify as AJAX request
+                    }
+                });
+
+                // Log the response details for debugging
+                console.log('Response status:', response.status);
+                console.log('Response URL:', response.url);
+                console.log('Response headers:', response.headers);
+
+                if (!response.ok) {
+                    // Get the response text to see what's actually being returned
+                    const responseText = await response.text();
+                    console.error('Response text:', responseText);
+                    throw new Error(`HTTP error! status: ${response.status}. Response: ${responseText.substring(0, 200)}...`);
+                }
+
+                // Check if the response is actually JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const responseText = await response.text();
+                    console.error('Expected JSON but got:', contentType, responseText);
+                    throw new Error('Server returned non-JSON response. Check your Django view.');
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('Fetch error details:', error);
+                // Close any loading dialogs
+                Swal.close();
+                throw error;
+            }
+        }
+
+        // Utility Functions
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function formatDuration(duration) {
+            if (!duration) return 'N/A';
+
+            // Handle Spotify duration (milliseconds)
+            if (typeof duration === 'number') {
+                const minutes = Math.floor(duration / 60000);
+                const seconds = ((duration % 60000) / 1000).toFixed(0);
+                return `${minutes}:${seconds.padStart(2, '0')}`;
+            }
+
+            // Handle YouTube duration (ISO 8601)
+            if (duration.startsWith('PT')) {
+                const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+                const hours = parseInt(match[1] || '0');
+                const minutes = parseInt(match[2] || '0');
+                const seconds = parseInt(match[3] || '0');
+
+                if (hours > 0) {
+                    return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            return duration;
+        }
+
+        // UI Functions
+        function updateSongDetails(data) {
+            songDetailsImg.src = data.album_cover || data.thumbnail || '';
+            songDetailsImg.style.display = songDetailsImg.src ? 'block' : 'none';
+            songDetailsArtist.textContent = data.artist_name || 'N/A';
+            songDetailsTitle.textContent = data.song_title || 'N/A';
+            songDetailsDuration.textContent = formatDuration(data.duration_ms || data.duration);
+            songDetailsCard.style.display = 'block';
+        }
+
+        function showLoading(title) {
+            Swal.fire({
+                title: title,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        }
+
+        function showAlert(icon, title, text, timer) {
+            Swal.fire({
+                icon: icon,
+                title: title,
+                text: text,
+                timer: timer,
+                showConfirmButton: !timer,
+                timerProgressBar: true
+            });
+        }
+    });
+</script>
+
+<!-- <script src="{% static 'js/submit_song.js' %}"></script> -->
+{% endblock %}

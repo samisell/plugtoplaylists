@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Payments - PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* Main container styles */
+    .dashboard-container {
+        padding: 30px 0;
+    }
+
+    /* Page header */
+    .page-header {
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(255, 102, 0, 0.05) 100%);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        color: #ff6600;
+        font-size: 2rem;
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
+        background: linear-gradient(45deg, #ff8533, #ff6600);
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white;
+        color: white;
+    }
+
+    /* Card styling */
+    .payments-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .payments-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        padding: 15px 20px;
+        background: linear-gradient(90deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%);
+        border-bottom: 1px solid rgba(255, 102, 0, 0.1);
+        font-weight: bold;
+        color: white;
+    }
+
+    /* Table styling */
+    .table {
+        color: #cccccc;
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        border-top: none;
+        border-bottom: 2px solid rgba(255, 102, 0, 0.2);
+        color: #ff6600;
+        font-weight: 600;
+        padding: 15px;
+    }
+
+    .table tbody td {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 102, 0, 0.05);
+    }
+
+    /* Badge styling */
+    .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.8rem;
+    }
+
+    .bg-success {
+        background-color: rgba(40, 167, 69, 0.2) !important;
+        color: #28a745 !important;
+    }
+
+    .bg-warning {
+        background-color: rgba(255, 193, 7, 0.2) !important;
+        color: #ffc107 !important;
+    }
+
+    .bg-danger {
+        background-color: rgba(220, 53, 69, 0.2) !important;
+        color: #dc3545 !important;
+    }
+
+    /* Empty state styling */
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: #cccccc;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: rgba(255, 102, 0, 0.2);
+        margin-bottom: 20px;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+
+    /* Payment info cards */
+    .payment-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .payment-info-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .payment-info-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .payment-info-icon {
+        font-size: 2rem;
+        color: #ff6600;
+        margin-bottom: 15px;
+    }
+
+    .payment-info-title {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container container">
+    <div class="page-header">
+        <h1>My Payments</h1>
+    </div>
+
+    <div class="payments-card">
+        <div class="card-header">
+            <i class="fas fa-credit-card me-2"></i> Payment History
+        </div>
+        <div class="card-body p-0">
+            {% if payments %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Song</th>
+                            <th>Package</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Transaction ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.payment_date|date:"M d, Y" }}</td>
+                            <td>{{ payment.song_title }}</td>
+                            <td>{{ payment.package.name }}</td>
+                            <td>₦{{ payment.package.price }}</td>
+                            <td>
+                                {% if payment.payment_status == 'completed' %}
+                                <span class="badge bg-success">Completed</span>
+                                {% elif payment.payment_status == 'failed' %}
+                                <span class="badge bg-danger">Failed</span>
+                                {% else %}
+                                <span class="badge bg-warning">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <code class="text-muted">{{ payment.transaction_reference|truncatechars:12 }}</code>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-receipt"></i>
+                <p>You don't have any payment records yet.</p>
+                <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Submit a Song</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="payment-info-grid">
+        <div class="payment-info-card">
+            <div class="payment-info-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="payment-info-title">Secure Payments</div>
+            <p>All payments are processed securely through Flutterwave's encrypted payment gateway.</p>
+        </div>
+
+        <div class="payment-info-card">
+            <div class="payment-info-icon">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="payment-info-title">Payment Methods</div>
+            <p>We accept credit cards, bank transfers, and mobile payments through our payment processor.</p>
+        </div>
+
+        <div class="payment-info-card">
+            <div class="payment-info-icon">
+                <i class="fas fa-file-invoice"></i>
+            </div>
+            <div class="payment-info-title">Receipts</div>
+            <p>Payment receipts are sent to your email address after each successful transaction.</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'dashboard:home' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

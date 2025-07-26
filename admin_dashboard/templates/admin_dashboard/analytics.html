@@ -1,0 +1,225 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}Analytics | Admin Dashboard{% endblock %}
+
+{% block header_title %}Analytics & Reports{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Key Metrics -->
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">Key Metrics</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <div class="p-3 bg-light rounded text-center">
+                            <div class="fs-1 fw-bold text-primary">{{ approval_rate|floatformat:1 }}%</div>
+                            <div class="text-muted">Approval Rate</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="p-3 bg-light rounded text-center">
+                            <div class="fs-1 fw-bold text-success">
+                                {{ payment_status_data.0|default:"0" }}
+                            </div>
+                            <div class="text-muted">Completed Payments</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="p-3 bg-light rounded text-center">
+                            <div class="fs-1 fw-bold text-warning">
+                                {{ submission_data|default:"0"|length }}
+                            </div>
+                            <div class="text-muted">Days with Submissions</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="p-3 bg-light rounded text-center">
+                            <div class="fs-1 fw-bold text-info">
+                                {{ genre_data|default:"0"|length }}
+                            </div>
+                            <div class="text-muted">Genres Represented</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submissions Over Time -->
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-header">Submissions Over Time (Last 30 Days)</div>
+            <div class="card-body">
+                <canvas id="submissionsChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Status Distribution -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header">Payment Status Distribution</div>
+            <div class="card-body">
+                <canvas id="paymentStatusChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Genre Distribution -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Genre Distribution</div>
+            <div class="card-body">
+                <canvas id="genreChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approval Status -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Approval Status</div>
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <div style="width: 200px; height: 200px;">
+                        <canvas id="approvalChart"></canvas>
+                    </div>
+                    <div class="ms-4">
+                        <div class="mb-3">
+                            <span class="d-inline-block me-2"
+                                style="width: 16px; height: 16px; background-color: #28a745;"></span>
+                            <span>Approved</span>
+                        </div>
+                        <div>
+                            <span class="d-inline-block me-2"
+                                style="width: 16px; height: 16px; background-color: #ffc107;"></span>
+                            <span>Pending</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Submissions over time chart
+    const submissionsCtx = document.getElementById('submissionsChart').getContext('2d');
+    const submissionsChart = new Chart(submissionsCtx, {
+        type: 'line',
+        data: {
+            labels: {{ submission_labels| safe }},
+    datasets: [{
+        label: 'Submissions',
+        data: {{ submission_data| safe }},
+        backgroundColor: 'rgba(255, 102, 0, 0.1)',
+        borderColor: '#ff6600',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true
+            }]
+        },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                scales: {
+            y: {
+                beginAtZero: true,
+                    ticks: {
+                    precision: 0
+                }
+            }
+        }
+    }
+    });
+
+    // Genre distribution chart
+    const genreCtx = document.getElementById('genreChart').getContext('2d');
+    const genreChart = new Chart(genreCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ genre_labels| safe }},
+    datasets: [{
+        label: 'Submissions',
+        data: {{ genre_data| safe }},
+        backgroundColor: [
+        '#ff6600', '#ff8533', '#ffa366', '#ffc199', '#ffdfcc',
+        '#ff4d00', '#cc3700', '#993a00', '#662600', '#331300'
+    ]
+            }]
+        },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                scales: {
+            y: {
+                beginAtZero: true,
+                    ticks: {
+                    precision: 0
+                }
+            }
+        }
+    }
+    });
+
+    // Payment status chart
+    const paymentStatusCtx = document.getElementById('paymentStatusChart').getContext('2d');
+    const paymentStatusChart = new Chart(paymentStatusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: {{ payment_status_labels| safe }},
+    datasets: [{
+        data: {{ payment_status_data| safe }},
+        backgroundColor: [
+        '#28a745', // Completed
+        '#ffc107', // Pending
+        '#dc3545'  // Failed
+    ],
+        borderWidth: 1
+            }]
+        },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+    });
+
+    // Approval status chart
+    const approvalCtx = document.getElementById('approvalChart').getContext('2d');
+    const approvalChart = new Chart(approvalCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Approved', 'Pending'],
+            datasets: [{
+                data: [
+                    {{ approval_rate }},
+            {{ pending_rate }}
+                ],
+    backgroundColor: [
+        '#28a745', // Approved
+        '#ffc107'  // Pending
+    ],
+        borderWidth: 1
+            }]
+        },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+    });
+</script>
+{% endblock %}
+{% endblock %}

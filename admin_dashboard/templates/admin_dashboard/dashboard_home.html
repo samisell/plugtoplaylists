@@ -1,0 +1,185 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}Admin Dashboard | PlugToPlaylists{% endblock %}
+
+{% block header_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Stats Cards -->
+    <div class="col-md-3 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <div class="stats-number">{{ total_submissions }}</div>
+            <div class="stats-title">Total Submissions</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+            <div class="stats-number">{{ pending_submissions }}</div>
+            <div class="stats-title">Pending Submissions</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stats-number">{{ approved_submissions }}</div>
+            <div class="stats-title">Approved Submissions</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="stats-number">₦{{ total_revenue }}</div>
+            <div class="stats-title">Total Revenue</div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Revenue Chart -->
+    <div class="col-md-8 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Revenue Last 30 Days</span>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary active">30 Days</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">90 Days</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="revenueChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Submissions -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Recent Submissions</span>
+                <a href="{% url 'admin_dashboard:song_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for song in recent_submissions %}
+                    <a href="{% url 'admin_dashboard:song_detail' song.id %}"
+                        class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ song.song_title }}</h6>
+                            <small>{{ song.submission_date|timesince }} ago</small>
+                        </div>
+                        <p class="mb-1">{{ song.artist_name }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small>{{ song.get_genre_display }}</small>
+                            {% if song.is_approved %}
+                            <span class="badge badge-approved">Approved</span>
+                            {% else %}
+                            <span class="badge badge-pending">Pending</span>
+                            {% endif %}
+                        </div>
+                    </a>
+                    {% empty %}
+                    <div class="list-group-item">
+                        <p class="mb-0 text-muted">No recent submissions</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Quick Actions -->
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                Quick Actions
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'admin_dashboard:song_list' %}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-music me-2"></i> View All Submissions
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'admin_dashboard:song_list' %}?status=pending" class="btn btn-outline-warning w-100">
+                            <i class="fas fa-hourglass-half me-2"></i> Review Pending Submissions
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'admin_dashboard:package_list' %}" class="btn btn-outline-success w-100">
+                            <i class="fas fa-box me-2"></i> Manage Packages
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'admin_dashboard:analytics' %}" class="btn btn-outline-info w-100">
+                            <i class="fas fa-chart-bar me-2"></i> View Analytics
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Revenue chart
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(revenueCtx, {
+        type: 'line',
+        data: {
+            labels: {{ chart_labels|safe }},
+    datasets: [{
+        label: 'Revenue (₦)',
+                data: {{ chart_data|safe }},
+        backgroundColor: 'rgba(255, 102, 0, 0.1)',
+        borderColor: '#ff6600',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: '#ff6600',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6
+            }]
+        },
+    options: {
+        responsive: true,
+            maintainAspectRatio: false,
+                scales: {
+            y: {
+                beginAtZero: true,
+                    grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+    });
+</script>
+{% endblock %}
+{% endblock %}

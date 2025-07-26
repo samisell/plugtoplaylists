@@ -1,0 +1,713 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #ff6600 0%, #1a1a1a 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.1;
+        z-index: -1;
+    }
+
+    .contact-wrapper {
+        padding-top: 100px;
+        padding-bottom: 4rem;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contact-container {
+        background: rgba(26, 26, 26, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(255, 102, 0, 0.3);
+        overflow: hidden;
+        width: 90%;
+        max-width: 1200px;
+        min-height: 700px;
+        display: flex;
+        position: relative;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+    }
+
+    .contact-left {
+        flex: 1;
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 60px 50px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-left::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 30px 30px;
+        animation: float 20s infinite linear;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(-20px) rotate(360deg); }
+    }
+
+    .contact-info {
+        z-index: 2;
+        color: white;
+    }
+
+    .contact-info h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        font-weight: 300;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .contact-info p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        line-height: 1.6;
+        margin-bottom: 40px;
+    }
+
+    .contact-details {
+        margin-bottom: 40px;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+        transition: transform 0.3s ease;
+    }
+
+    .contact-item:hover {
+        transform: translateX(10px);
+    }
+
+    .contact-item i {
+        font-size: 1.5rem;
+        margin-right: 20px;
+        width: 30px;
+        text-align: center;
+    }
+
+    .contact-item-content h4 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .contact-item-content p {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .social-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-5px);
+        color: white;
+    }
+
+    .contact-right {
+        flex: 1;
+        padding: 60px 50px;
+        background: rgba(26, 26, 26, 0.98);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .form-header h1 {
+        color: #ff6600;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .form-header p {
+        color: #cccccc;
+        font-size: 1.1rem;
+    }
+
+    .contact-form {
+        width: 100%;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        flex: 1;
+    }
+
+    .form-group label {
+        display: block;
+        color: #ff6600;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 15px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 102, 0, 0.3);
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        resize: vertical;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #ff6600;
+        background: rgba(255, 102, 0, 0.1);
+        box-shadow: 0 0 20px rgba(255, 102, 0, 0.2);
+    }
+
+    .form-control::placeholder {
+        color: #888888;
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        max-height: 200px;
+    }
+
+    .form-control.select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ff6600' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 12px center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+        padding-right: 40px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 102, 0, 0.4);
+    }
+
+    .form-footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 102, 0, 0.2);
+        color: #cccccc;
+        font-size: 0.9rem;
+    }
+
+    .success-message {
+        background: rgba(40, 167, 69, 0.2);
+        border: 1px solid rgba(40, 167, 69, 0.5);
+        color: #28a745;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .error-message {
+        background: rgba(220, 53, 69, 0.2);
+        border: 1px solid rgba(220, 53, 69, 0.5);
+        color: #dc3545;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .breadcrumb {
+        position: absolute;
+        top: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(26, 26, 26, 0.8);
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: 1px solid rgba(255, 102, 0, 0.3);
+        backdrop-filter: blur(10px);
+        z-index: 10;
+    }
+
+    .breadcrumb a {
+        color: #ff6600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb a:hover {
+        color: #ff8533;
+        text-decoration: underline;
+    }
+
+    .breadcrumb span {
+        color: #cccccc;
+        margin: 0 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .contact-container {
+            flex-direction: column;
+            margin: 20px;
+            min-height: auto;
+        }
+        
+        .contact-left, .contact-right {
+            padding: 40px 30px;
+        }
+        
+        .contact-info h2 {
+            font-size: 2rem;
+        }
+        
+        .form-header h1 {
+            font-size: 2rem;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .contact-wrapper {
+            padding-top: 80px;
+        }
+
+        .breadcrumb {
+            top: 90px;
+            left: 20px;
+            right: 20px;
+            transform: none;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .contact-left, .contact-right {
+            padding: 30px 20px;
+        }
+
+        .contact-item {
+            padding: 12px;
+        }
+
+        .contact-item i {
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+<div class="breadcrumb">
+    <a href="{% url 'landing:home' %}"><i class="fas fa-home"></i> Home</a>
+    <span>/</span>
+    <span>Contact Us</span>
+</div>
+
+<div class="contact-wrapper">
+    <div class="contact-container">
+        <div class="contact-left">
+            <div class="contact-info">
+                <h2>Get In Touch</h2>
+                <p>Ready to grow your music career? Have questions about our services? We're here to help you succeed in the music industry.</p>
+                
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="contact-item-content">
+                            <h4>Email Us</h4>
+                            <p>support@plugtoplaylists.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="contact-item-content">
+                            <h4>Call Us</h4>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="contact-item-content">
+                            <h4>Visit Us</h4>
+                            <p>123 Music Street<br>Los Angeles, CA 90210</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="contact-item-content">
+                            <h4>Business Hours</h4>
+                            <p>Mon - Fri: 9:00 AM - 6:00 PM PST<br>Weekend: By Appointment</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-link" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="social-link" title="Spotify">
+                        <i class="fab fa-spotify"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-right">
+            <div class="form-header">
+                <h1>Send us a Message</h1>
+                <p>We'll get back to you within 24 hours</p>
+            </div>
+            
+            <div id="success-message" class="success-message">
+                <i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully. We'll get back to you soon.
+            </div>
+            
+            <div id="error-message" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> <span id="error-text">Please fill in all required fields.</span>
+            </div>
+            
+            <form class="contact-form" method="post" action="{% url 'landing:contact' %}">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name">First Name *</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Your first name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name">Last Name *</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Your last name" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="your.email@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="+1 (555) 123-4567">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="artist_name">Artist/Band Name</label>
+                    <input type="text" id="artist_name" name="artist_name" class="form-control" placeholder="Your artist or band name">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" name="subject" class="form-control select" required>
+                            <option value="">Select a topic</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="submission">Music Submission Question</option>
+                            <option value="pricing">Pricing & Packages</option>
+                            <option value="technical">Technical Support</option>
+                            <option value="partnership">Partnership Opportunity</option>
+                            <option value="press">Press & Media</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="genre">Music Genre</label>
+                        <select id="genre" name="genre" class="form-control select">
+                            <option value="">Select your genre</option>
+                            <option value="pop">Pop</option>
+                            <option value="rock">Rock</option>
+                            <option value="hip_hop">Hip Hop</option>
+                            <option value="electronic">Electronic</option>
+                            <option value="rnb">R&B</option>
+                            <option value="country">Country</option>
+                            <option value="indie">Indie</option>
+                            <option value="jazz">Jazz</option>
+                            <option value="classical">Classical</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Your Message *</label>
+                    <textarea id="message" name="message" class="form-control" placeholder="Tell us about your music, goals, or any questions you have..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="spotify_url">Spotify Profile URL (Optional)</label>
+                    <input type="url" id="spotify_url" name="spotify_url" class="form-control" placeholder="https://open.spotify.com/artist/...">
+                </div>
+                
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+            
+            <div class="form-footer">
+                <p><i class="fas fa-shield-alt"></i> Your information is secure and will never be shared with third parties.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.contact-form');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Basic form validation
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            let firstInvalidField = null;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#dc3545';
+                    if (!firstInvalidField) {
+                        firstInvalidField = field;
+                    }
+                } else {
+                    field.style.borderColor = 'rgba(255, 102, 0, 0.3)';
+                }
+            });
+            
+            // Email validation
+            const emailField = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailField.value && !emailRegex.test(emailField.value)) {
+                isValid = false;
+                emailField.style.borderColor = '#dc3545';
+                errorText.textContent = 'Please enter a valid email address.';
+                if (!firstInvalidField) {
+                    firstInvalidField = emailField;
+                }
+            }
+            
+            if (!isValid) {
+                errorMessage.style.display = 'block';
+                if (firstInvalidField) {
+                    firstInvalidField.focus();
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+            
+            // Simulate form submission (replace with actual submission logic)
+            const submitButton = form.querySelector('.btn-primary');
+            const originalText = submitButton.innerHTML;
+            
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitButton.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                successMessage.style.display = 'block';
+                form.reset();
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                
+                // Scroll to success message
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                console.log('Form Data:', new FormData(form));
+            }, 2000);
+        });
+        
+        // Real-time validation feedback
+        const inputs = form.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value.trim()) {
+                    this.style.borderColor = '#dc3545';
+                } else if (this.type === 'email' && this.value) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(this.value)) {
+                        this.style.borderColor = '#dc3545';
+                    } else {
+                        this.style.borderColor = 'rgba(255, 102, 0, 0.3)';
+                    }
+                } else {
+                    this.style.borderColor = 'rgba(255, 102, 0, 0.3)';
+                }
+            });
+            
+            input.addEventListener('focus', function() {
+                this.style.borderColor = '#ff6600';
+            });
+        });
+        
+        // Character counter for message field
+        const messageField = document.getElementById('message');
+        const maxLength = 1000;
+        
+        function createCharCounter() {
+            const counter = document.createElement('div');
+            counter.style.cssText = `
+                font-size: 0.8rem;
+                color: #888888;
+                text-align: right;
+                margin-top: 5px;
+            `;
+            messageField.parentNode.appendChild(counter);
+            return counter;
+        }
+        
+        const charCounter = createCharCounter();
+        
+        messageField.addEventListener('input', function() {
+            const remaining = maxLength - this.value.length;
+            charCounter.textContent = `${remaining} characters remaining`;
+            
+            if (remaining < 50) {
+                charCounter.style.color = '#ff6600';
+            } else {
+                charCounter.style.color = '#888888';
+            }
+            
+            if (remaining < 0) {
+                charCounter.style.color = '#dc3545';
+                this.style.borderColor = '#dc3545';
+            }
+        });
+        
+        // Initialize character counter
+        messageField.dispatchEvent(new Event('input'));
+    });
+</script>
+{% endblock %}

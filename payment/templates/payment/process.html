@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Complete Payment | PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* Payment Process Styles */
+    .payment-section {
+        background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%),
+            url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        color: white;
+        padding: 4rem 0;
+    }
+
+    .payment-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(26, 26, 26, 0.95);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 102, 0, 0.2);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .payment-header {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .payment-header h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .payment-body {
+        padding: 2rem;
+    }
+
+    .payment-details {
+        margin-bottom: 2rem;
+    }
+
+    .payment-details h3 {
+        color: #ff6600;
+        margin-bottom: 1rem;
+        font-size: 1.4rem;
+        border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+        padding-bottom: 0.5rem;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .detail-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 1rem;
+        border: 1px solid rgba(255, 102, 0, 0.1);
+    }
+
+    .detail-item h4 {
+        color: #cccccc;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .detail-item p {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .payment-notice {
+        background: rgba(255, 102, 0, 0.1);
+        border-left: 4px solid #ff6600;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .payment-notice p {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .payment-notice i {
+        color: #ff6600;
+    }
+
+    #pay-button {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        border: none;
+        color: white;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    #pay-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    #pay-button:hover::before {
+        left: 100%;
+    }
+
+    #pay-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
+    }
+
+    .security-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        color: #cccccc;
+        font-size: 0.9rem;
+    }
+
+    .security-info i {
+        color: #ff6600;
+    }
+
+    .cancel-link {
+        display: block;
+        text-align: center;
+        margin-top: 1rem;
+        color: #cccccc;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.3s;
+    }
+
+    .cancel-link:hover {
+        color: #ff6600;
+    }
+
+    @media (max-width: 768px) {
+        .payment-container {
+            margin: 1rem;
+        }
+
+        .payment-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        #pay-button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="payment-section">
+    <div class="container">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h2>Complete Your Payment</h2>
+            </div>
+            <div class="payment-body">
+                <div class="payment-details">
+                    <h3>Song Details</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <h4>Artist</h4>
+                            <p>{{ song.artist_name }}</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Title</h4>
+                            <p>{{ song.song_title }}</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Genre</h4>
+                            <p>{{ song.get_genre_display }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-details">
+                    <h3>Package Selected</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <h4>Package</h4>
+                            <p>{{ package.name }}</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Price</h4>
+                            <p>₦{{ package.price }}</p>
+                        </div>
+                    </div>
+                    <div class="detail-item" style="margin-top: 1rem;">
+                        <h4>Description</h4>
+                        <p style="font-size: 1rem; font-weight: 400;">{{ package.description }}</p>
+                    </div>
+                </div>
+
+                <div class="payment-notice">
+                    <p><i class="fas fa-info-circle"></i> Click the button below to complete your payment securely with
+                        Flutterwave.</p>
+                </div>
+
+                <button type="button" id="pay-button">
+                    <i class="fas fa-lock" style="margin-right: 0.5rem;"></i> Pay Now ₦{{ package.price }}
+                </button>
+
+                <div class="security-info">
+                    <i class="fas fa-shield-alt"></i> Your payment is processed securely
+                </div>
+
+                <a href="{% url 'landing:submit_song' %}" class="cancel-link">Cancel and return to submission</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('pay-button').addEventListener('click', function () {
+            FlutterwaveCheckout({
+                public_key: "{{ flutterwave_public_key }}",
+                tx_ref: "{{ tx_ref }}",
+                amount: {{ package.price }},
+            currency: "NGN",
+            payment_options: "card, banktransfer, ussd",
+            redirect_url: "{{ callback_url }}",
+            customer: {
+            email: "{{ song.email }}",
+            name: "{{ song.artist_name }}"
+        },
+            customizations: {
+            title: "PlugToPlaylists",
+            description: "Payment for {{ package.name }} package",
+            logo: window.location.origin + "/static/img/logo.png"
+        }
+            });
+        });
+    });
+</script>
+{% endblock %}

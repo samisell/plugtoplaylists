@@ -1,0 +1,574 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PlugToPlaylists - Grow Your Spotify Audience{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<style>
+    /* Include all your CSS styles from previous templates */
+    /* Plus these additional styles for landing page sections */
+
+    section {
+        padding: 6rem 0;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+        color: #ff6600;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .section-title p {
+        color: #cccccc;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%),
+            url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: white;
+        padding-top: 80px;
+    }
+
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+
+    .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    /* Grow Your Music Section */
+    .grow-music {
+        background-color: #1a1a1a;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        color: #ff6600;
+        margin-bottom: 1.5rem;
+    }
+
+    .feature-card h3 {
+        color: white;
+        margin-bottom: 1rem;
+    }
+
+    /* How It Works Section */
+    .steps-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .step {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        align-items: center;
+    }
+
+    .step-number {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    /* Testimonials Section */
+    .testimonials {
+        background-color: #1a1a1a;
+    }
+
+    .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .testimonial-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+    }
+
+    .testimonial-content {
+        margin-bottom: 1.5rem;
+        font-style: italic;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    /* FAQ Section */
+    .faq-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .faq-item {
+        margin-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+        padding-bottom: 1rem;
+    }
+
+    .faq-question {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+    }
+
+    /* Contact Section */
+    .contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        color: #ff6600;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 102, 0, 0.3);
+        border-radius: 6px;
+        color: white;
+    }
+
+    .submit-song {
+        background-color: #1a1a1a;
+    }
+
+    .submit-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+    }
+
+    .submit-text h3 {
+        color: white;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .submit-text ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .submit-text li {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #cccccc;
+    }
+
+    .submit-text i {
+        color: #ff6600;
+    }
+
+    .cta-card {
+        background: rgba(255, 102, 0, 0.1);
+        border: 1px solid rgba(255, 102, 0, 0.3);
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .cta-card h3 {
+        color: white;
+        margin-bottom: 1rem;
+    }
+
+    .cta-card p {
+        color: #cccccc;
+        margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .submit-content {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Grow Your Spotify Audience</h1>
+            <p>Meet the Playlist Booker. We are a marketing agency bridging the gap between legitimate independent
+                curators and artists. We are here to help you grow your music by introducing you to a new Audience on
+                Spotify.</p>
+            <div class="hero-buttons">
+                <a href="#how-it-works" class="btn btn-primary">How It Works</a>
+                <a href="{% url 'accounts:register' %}" class="btn btn-outline">Get Started</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Grow Your Music Section -->
+<section class="grow-music" id="grow-your-music">
+    <div class="container">
+        <div class="section-title">
+            <h2>Grow Your Music</h2>
+            <p>We help independent artists reach new listeners through strategic playlist placements</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Increase Streams</h3>
+                <p>Get your music in front of thousands of new listeners who will love your sound and keep coming back
+                    for more.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Build Your Fanbase</h3>
+                <p>Connect with real listeners who engage with your music and follow your artist profile for future
+                    releases.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Legitimate Placements</h3>
+                <p>We only work with authentic playlist curators who have real, engaged audiences - no bots or fake
+                    streams.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works" id="how-it-works">
+    <div class="container">
+        <div class="section-title">
+            <h2>How It Works</h2>
+            <p>Our simple 3-step process to get your music in front of new listeners</p>
+        </div>
+
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Submit Your Track</h3>
+                    <p>Upload your best track and tell us about your music. We'll analyze your sound to find the perfect
+                        playlists for your genre.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>We Pitch To Curators</h3>
+                    <p>Our team personally pitches your music to our network of independent playlist curators who
+                        specialize in your genre.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Get Added To Playlists</h3>
+                    <p>Watch your streams grow as curators add your music to their playlists, exposing you to thousands
+                        of new potential fans.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials" id="testimonials">
+    <div class="container">
+        <div class="section-title">
+            <h2>What Our Clients Say</h2>
+            <p>Reviews from artists who have grown their audience with PlugToPlaylists</p>
+        </div>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "PlugToPlaylists helped me get my music on 5 different playlists and I saw my monthly listeners grow
+                    from 200 to over 5,000 in just one month!"
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Artist" class="author-avatar">
+                    <div>
+                        <h4>Sarah J.</h4>
+                        <p>Indie Pop Artist</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "As an independent rapper, it's hard to get noticed. Thanks to PlugToPlaylists, my latest single got
+                    added to some great hip-hop playlists and now I'm getting approached by labels."
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Artist" class="author-avatar">
+                    <div>
+                        <h4>Marcus T.</h4>
+                        <p>Hip-Hop Artist</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "I was skeptical at first, but the results speak for themselves. My streams increased by 300% and
+                    I've gained hundreds of new followers who actually engage with my music."
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Artist" class="author-avatar">
+                    <div>
+                        <h4>Elena R.</h4>
+                        <p>Electronic Producer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Us Section -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="section-title">
+            <h2>About Us</h2>
+            <p>Our mission is to help independent artists succeed</p>
+        </div>
+
+        <div class="about-content">
+            <p>PlugToPlaylists was founded by music industry professionals who saw how difficult it was for talented
+                independent artists to get their music heard. We've built relationships with hundreds of legitimate
+                playlist curators across all genres to create a bridge between creators and audiences.</p>
+
+            <p>Unlike other services, we don't promise overnight success or fake streams. We provide real opportunities
+                for your music to be discovered by people who will genuinely appreciate your sound and become long-term
+                fans.</p>
+
+            <p>Our team carefully reviews every submission to ensure we only pitch high-quality music to our curator
+                network, maintaining the integrity of both the playlists and your artist profile.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Submit Your Song Section -->
+<section class="submit-song" id="submit-song">
+    <div class="container">
+        <div class="section-title">
+            <h2>Ready to Grow Your Audience?</h2>
+            <p>Submit your song to be considered for placement in our network of playlists</p>
+        </div>
+
+        <div class="submit-content">
+            <div class="submit-text">
+                <h3>Why Submit Through Us?</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Direct access to legitimate playlist curators</li>
+                    <li><i class="fas fa-check-circle"></i> Personalized pitching for your genre</li>
+                    <li><i class="fas fa-check-circle"></i> No bots or fake streams - real listeners only</li>
+                    <li><i class="fas fa-check-circle"></i> Transparent reporting on placements</li>
+                </ul>
+            </div>
+
+            <div class="submit-cta">
+                <div class="cta-card">
+                    <h3>Get Started Today</h3>
+                    <p>Submit your best track for consideration in our curator network</p>
+                    <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Submit Your Song</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq" id="faq">
+    <div class="container">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Everything you need to know about our service</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">How long does it take to get placed on playlists?</div>
+                <div class="faq-answer">Most placements happen within 2-3 weeks of submission. Our curators take time to
+                    listen and consider each track carefully.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What genres do you work with?</div>
+                <div class="faq-answer">We work with all major genres including pop, hip-hop, electronic, rock, R&B, and
+                    more. We have specialized curators for niche genres as well.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I submit multiple tracks?</div>
+                <div class="faq-answer">Yes! We offer packages for multiple track submissions. We recommend focusing on
+                    your strongest single first.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do you ensure playlist quality?</div>
+                <div class="faq-answer">We vet all curators and only work with those who have real, engaged audiences
+                    and follow Spotify's guidelines.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+            <p>Have questions? Get in touch with our team</p>
+        </div>
+
+        <div class="contact-form">
+            <form>
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" rows="5" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% include 'includes/footer.html' %}
+
+<script>
+    // Simple FAQ toggle functionality
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}Payment Details | Admin Dashboard{% endblock %}
+
+{% block header_title %}Payment Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <!-- Payment Information -->
+        <div class="card mb-4">
+            <div class="card-header">Payment Information</div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5 class="mb-3">Transaction #{{ payment.transaction_reference }}</h5>
+                        <p class="mb-2">
+                            <strong>Status:</strong>
+                            {% if payment.payment_status == 'completed' %}
+                            <span class="badge badge-completed">Completed</span>
+                            {% elif payment.payment_status == 'failed' %}
+                            <span class="badge badge-failed">Failed</span>
+                            {% else %}
+                            <span class="badge badge-pending">Pending</span>
+                            {% endif %}
+                        </p>
+                        <p class="mb-2"><strong>Date:</strong> {% if payment.payment_date %}{{ payment.payment_date|date:"F j, Y H:i" }}{% else %}N/A{% endif %}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong>Package:</strong> {{ payment.package.name|default:"N/A" }}</p>
+                        <p class="mb-2"><strong>Amount:</strong> ₦{{ payment.package.price|default:"0.00" }}</p>
+                    </div>
+                </div>
+                
+                <h6>Transaction Details</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Transaction ID</th>
+                            <td>{{ payment.transaction_reference }}</td>
+                        </tr>
+                        <tr>
+                            <th>Payment Status</th>
+                            <td>{{ payment.get_payment_status_display }}</td>
+                        </tr>
+                        <tr>
+                            <th>Payment Date</th>
+                            <td>{% if payment.payment_date %}{{ payment.payment_date|date:"F j, Y H:i" }}{% else %}N/A{% endif %}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Song Information -->
+        <div class="card mb-4">
+            <div class="card-header">Song Information</div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5 class="mb-3">{{ payment.song_title }}</h5>
+                        <p class="mb-2"><strong>Artist:</strong> {{ payment.artist_name }}</p>
+                        <p class="mb-2"><strong>Genre:</strong> {{ payment.get_genre_display }}</p>
+                        <p class="mb-2">
+                            <strong>Status:</strong>
+                            {% if payment.is_approved %}
+                            <span class="badge badge-approved">Approved</span>
+                            {% else %}
+                            <span class="badge badge-pending">Pending</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong>Submitted:</strong> {{ payment.submission_date|date:"F j, Y H:i" }}</p>
+                        <p class="mb-2"><strong>Link Type:</strong> {{ payment.get_link_type_display }}</p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6>Music Link</h6>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{ payment.music_link }}" readonly>
+                        <a href="{{ payment.music_link }}" target="_blank" class="btn btn-outline-secondary">
+                            <i class="fas fa-external-link-alt"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <!-- Contact Information -->
+        <div class="card mb-4">
+            <div class="card-header">Customer Information</div>
+            <div class="card-body">
+                <p><strong>Email:</strong> <a href="mailto:{{ payment.email }}">{{ payment.email }}</a></p>
+                {% if payment.phone %}
+                <p><strong>Phone:</strong> {{ payment.phone }}</p>
+                {% endif %}
+                
+                {% if payment.user %}
+                <hr>
+                <p><strong>Registered User:</strong> {{ payment.user.username }}</p>
+                <p><strong>User ID:</strong> {{ payment.user.id }}</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="card-header">Quick Actions</div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'admin_dashboard:payment_list' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Payments
+                    </a>
+                    <a href="{% url 'admin_dashboard:song_detail' payment.id %}" class="btn btn-outline-info">
+                        <i class="fas fa-music me-2"></i> View Song Details
+                    </a>
+                    <a href="mailto:{{ payment.email }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-envelope me-2"></i> Email Customer
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Terms and Conditions - PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    body {
+        background-color: #0d0d0d;
+        color: #cccccc;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+
+    .legal-container {
+        min-height: 100vh;
+        padding-top: 100px;
+        padding-bottom: 4rem;
+    }
+
+    .legal-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        padding: 3rem 0;
+        background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%),
+            url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-size: cover;
+        background-position: center;
+        border-radius: 12px;
+        margin-bottom: 3rem;
+    }
+
+    .legal-header h1 {
+        color: #ff6600;
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .legal-header p {
+        font-size: 1.2rem;
+        color: #cccccc;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .legal-content {
+        max-width: 900px;
+        margin: 0 auto;
+        background: rgba(26, 26, 26, 0.8);
+        padding: 3rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .legal-content h2 {
+        color: #ff6600;
+        font-size: 1.8rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid rgba(255, 102, 0, 0.3);
+        padding-bottom: 0.5rem;
+    }
+
+    .legal-content h2:first-child {
+        margin-top: 0;
+    }
+
+    .legal-content h3 {
+        color: #ff8533;
+        font-size: 1.4rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .legal-content p {
+        margin-bottom: 1.5rem;
+        text-align: justify;
+    }
+
+    .legal-content ul,
+    .legal-content ol {
+        margin-bottom: 1.5rem;
+        padding-left: 2rem;
+    }
+
+    .legal-content li {
+        margin-bottom: 0.5rem;
+    }
+
+    .legal-content strong {
+        color: #ff6600;
+        font-weight: 600;
+    }
+
+    .last-updated {
+        background: rgba(255, 102, 0, 0.1);
+        border: 1px solid rgba(255, 102, 0, 0.3);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .last-updated strong {
+        color: #ff6600;
+    }
+
+    .contact-info {
+        background: rgba(255, 102, 0, 0.1);
+        border: 1px solid rgba(255, 102, 0, 0.3);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .contact-info h3 {
+        color: #ff6600;
+        margin-bottom: 1rem;
+        margin-top: 0;
+    }
+
+    .breadcrumb {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: rgba(255, 102, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .breadcrumb a {
+        color: #ff6600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb a:hover {
+        color: #ff8533;
+        text-decoration: underline;
+    }
+
+    .breadcrumb span {
+        color: #cccccc;
+        margin: 0 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .legal-header h1 {
+            font-size: 2.2rem;
+        }
+
+        .legal-content {
+            padding: 2rem 1.5rem;
+            margin: 0 1rem;
+        }
+
+        .legal-container {
+            padding-top: 80px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+<div class="legal-container">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{% url 'landing:index' %}"><i class="fas fa-home"></i> Home</a>
+            <span>/</span>
+            <span>Terms and Conditions</span>
+        </div>
+
+        <div class="legal-header">
+            <h1>Terms and Conditions</h1>
+            <p>Please read these terms carefully before using PlugToPlaylists services</p>
+        </div>
+
+        <div class="legal-content">
+            <div class="last-updated">
+                <strong>Last Updated:</strong> {{ last_updated|default:"January 1, 2025" }}
+            </div>
+
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing and using PlugToPlaylists ("we," "us," or "our"), you accept and agree to be bound by the
+                terms and provision of this agreement. If you do not agree to abide by the above, please do not use this
+                service.</p>
+
+            <h2>2. Description of Service</h2>
+            <p><strong>PlugToPlaylists</strong> is a music marketing platform that connects independent artists with
+                legitimate Spotify playlist curators. Our service helps artists grow their audience through strategic
+                playlist placements.</p>
+
+            <h3>2.1 Our Services Include:</h3>
+            <ul>
+                <li>Music submission and review process</li>
+                <li>Pitching to our network of verified playlist curators</li>
+                <li>Playlist placement opportunities</li>
+                <li>Performance reporting and analytics</li>
+                <li>Customer support and guidance</li>
+            </ul>
+
+            <h2>3. User Eligibility and Registration</h2>
+            <p>To use our services, you must:</p>
+            <ul>
+                <li>Be at least 18 years old or have parental consent</li>
+                <li>Own or have legal rights to the music you submit</li>
+                <li>Provide accurate and complete information during registration</li>
+                <li>Maintain the security of your account credentials</li>
+            </ul>
+
+            <h2>4. Music Submission Guidelines</h2>
+            <h3>4.1 Acceptable Content</h3>
+            <p>Music submitted to PlugToPlaylists must:</p>
+            <ul>
+                <li>Be original work or properly licensed covers</li>
+                <li>Meet professional quality standards</li>
+                <li>Be available on Spotify</li>
+                <li>Comply with Spotify's content guidelines</li>
+                <li>Not contain explicit content without proper labeling</li>
+            </ul>
+
+            <h3>4.2 Prohibited Content</h3>
+            <p>We do not accept music that contains:</p>
+            <ul>
+                <li>Hate speech, discrimination, or offensive content</li>
+                <li>Copyright infringement</li>
+                <li>Explicit violence or illegal activities</li>
+                <li>Content that violates any applicable laws</li>
+            </ul>
+
+            <h2>5. Service Guarantees and Limitations</h2>
+            <h3>5.1 No Placement Guarantee</h3>
+            <p>While we work diligently to secure playlist placements, <strong>we cannot guarantee</strong> that your
+                music will be added to any specific playlist or achieve specific results. Playlist curators make
+                independent decisions based on their own criteria.</p>
+
+            <h3>5.2 Legitimate Placements Only</h3>
+            <p>We only work with verified, legitimate playlist curators who:</p>
+            <ul>
+                <li>Have real, engaged audiences</li>
+                <li>Follow Spotify's terms of service</li>
+                <li>Maintain authentic playlists without artificial manipulation</li>
+            </ul>
+
+            <h2>6. Payment Terms</h2>
+            <h3>6.1 Service Fees</h3>
+            <p>Payment for our services is required upfront. All fees are non-refundable except as specifically outlined
+                in our refund policy.</p>
+
+            <h3>6.2 Refund Policy</h3>
+            <p>Refunds may be considered in the following circumstances:</p>
+            <ul>
+                <li>Technical issues preventing service delivery</li>
+                <li>Failure to review your submission within 30 days</li>
+                <li>Service cancellation within 24 hours of purchase</li>
+            </ul>
+
+            <h2>7. Intellectual Property Rights</h2>
+            <h3>7.1 Your Rights</h3>
+            <p>You retain all rights to your original music. By using our service, you grant us a limited license to:
+            </p>
+            <ul>
+                <li>Review and evaluate your submissions</li>
+                <li>Pitch your music to our curator network</li>
+                <li>Use excerpts for promotional purposes with your consent</li>
+            </ul>
+
+            <h3>7.2 Our Rights</h3>
+            <p>PlugToPlaylists and all related materials are protected by copyright and other intellectual property
+                laws. You may not reproduce, distribute, or create derivative works without our written permission.</p>
+
+            <h2>8. User Conduct and Responsibilities</h2>
+            <p>Users agree to:</p>
+            <ul>
+                <li>Provide accurate information about themselves and their music</li>
+                <li>Not attempt to manipulate or game the system</li>
+                <li>Respect the decisions of playlist curators</li>
+                <li>Not harass or spam curators directly</li>
+                <li>Comply with all applicable laws and regulations</li>
+            </ul>
+
+            <h2>9. Privacy and Data Protection</h2>
+            <p>Your privacy is important to us. Please review our <a href="{% url 'landing:privacy_page' %}"
+                    style="color: #ff6600;">Privacy Policy</a> to understand how we collect, use, and protect your
+                personal information.</p>
+
+            <h2>10. Limitation of Liability</h2>
+            <p>PlugToPlaylists shall not be liable for:</p>
+            <ul>
+                <li>Any indirect, incidental, or consequential damages</li>
+                <li>Loss of profits, data, or business opportunities</li>
+                <li>Actions or decisions made by third-party playlist curators</li>
+                <li>Changes to Spotify's platform or policies</li>
+                <li>Technical issues beyond our reasonable control</li>
+            </ul>
+
+            <h2>11. Termination</h2>
+            <h3>11.1 Termination by You</h3>
+            <p>You may terminate your account at any time by contacting our support team. Termination does not entitle
+                you to a refund of fees already paid.</p>
+
+            <h3>11.2 Termination by Us</h3>
+            <p>We reserve the right to terminate or suspend your account if you:</p>
+            <ul>
+                <li>Violate these terms and conditions</li>
+                <li>Engage in fraudulent or abusive behavior</li>
+                <li>Submit content that violates our guidelines</li>
+                <li>Fail to pay required fees</li>
+            </ul>
+
+            <h2>12. Changes to Terms</h2>
+            <p>We reserve the right to modify these terms at any time. Changes will be posted on this page with an
+                updated "Last Modified" date. Continued use of our services after changes constitutes acceptance of the
+                new terms.</p>
+
+            <h2>13. Governing Law</h2>
+            <p>These terms shall be governed by and construed in accordance with the laws of [Your Jurisdiction],
+                without regard to its conflict of law provisions.</p>
+
+            <h2>14. Dispute Resolution</h2>
+            <p>Any disputes arising from these terms or our services shall be resolved through binding arbitration
+                rather than in court, except where prohibited by law.</p>
+
+            <h2>15. Severability</h2>
+            <p>If any provision of these terms is found to be unenforceable, the remaining provisions will remain in
+                full force and effect.</p>
+
+            <div class="contact-info">
+                <h3>Questions About These Terms?</h3>
+                <p>If you have any questions about these Terms and Conditions, please contact us:</p>
+                <p><strong>Email:</strong> legal@plugtoplaylists.com</p>
+                <p><strong>Address:</strong> [Your Business Address]</p>
+                <p><strong>Phone:</strong> [Your Phone Number]</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+{% endblock %}

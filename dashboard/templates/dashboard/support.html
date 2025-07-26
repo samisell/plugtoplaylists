@@ -1,0 +1,411 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Support - PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* Main container styles */
+    .dashboard-container {
+        padding: 30px 0;
+    }
+
+    /* Page header */
+    .page-header {
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(255, 102, 0, 0.05) 100%);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        color: #ff6600;
+        font-size: 2rem;
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
+        background: linear-gradient(45deg, #ff8533, #ff6600);
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white;
+        color: white;
+    }
+
+    .btn-outline-primary {
+        background: transparent;
+        border: 1px solid rgba(255, 102, 0, 0.5);
+        color: #ff6600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background: rgba(255, 102, 0, 0.1);
+        border-color: #ff6600;
+        color: #ff6600;
+    }
+
+    /* Card styling */
+    .support-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .support-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        padding: 15px 20px;
+        background: linear-gradient(90deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%);
+        border-bottom: 1px solid rgba(255, 102, 0, 0.1);
+        font-weight: bold;
+        color: white;
+    }
+
+    .card-header i {
+        color: #ff6600;
+        margin-right: 10px;
+    }
+
+    /* Table styling */
+    .table {
+        color: #cccccc;
+    }
+
+    .table thead th {
+        border-top: none;
+        border-bottom: 2px solid rgba(255, 102, 0, 0.2);
+        color: #ff6600;
+        font-weight: 600;
+        padding: 15px;
+    }
+
+    .table tbody td {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 102, 0, 0.05);
+    }
+
+    /* Badge styling */
+    .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.8rem;
+    }
+
+    .bg-success {
+        background-color: rgba(40, 167, 69, 0.2) !important;
+        color: #28a745 !important;
+    }
+
+    .bg-info {
+        background-color: rgba(23, 162, 184, 0.2) !important;
+        color: #17a2b8 !important;
+    }
+
+    .bg-secondary {
+        background-color: rgba(108, 117, 125, 0.2) !important;
+        color: #6c757d !important;
+    }
+
+    .bg-warning {
+        background-color: rgba(255, 193, 7, 0.2) !important;
+        color: #ffc107 !important;
+    }
+
+    /* FAQ section */
+    .accordion-button {
+        background-color: rgba(255, 255, 255, 0.03);
+        color: white;
+        border: none;
+        padding: 15px;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+    }
+
+    .accordion-button:focus {
+        box-shadow: 0 0 0 0.25rem rgba(255, 102, 0, 0.25);
+    }
+
+    .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ff6600'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+
+    .accordion-body {
+        background-color: rgba(255, 255, 255, 0.01);
+        padding: 15px;
+        color: #cccccc;
+    }
+
+    /* Contact section */
+    .contact-icon {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+
+    .contact-info h5 {
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    .contact-info p {
+        color: #cccccc;
+        margin-bottom: 0;
+    }
+
+    .contact-info a {
+        color: #ff6600;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .contact-info a:hover {
+        color: #ff8533;
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container container">
+    <div class="page-header">
+        <h1>Support Center</h1>
+        <a href="{% url 'dashboard:create_support_request' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle me-2"></i> New Support Request
+        </a>
+    </div>
+
+    <div class="support-card">
+        <div class="card-header">
+            <i class="fas fa-ticket-alt"></i> My Support Requests
+        </div>
+        <div class="card-body p-0">
+            {% if support_requests %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in support_requests %}
+                        <tr>
+                            <td>{{ request.subject }}</td>
+                            <td>{{ request.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                {% if request.status == 'resolved' %}
+                                <span class="badge bg-success">Resolved</span>
+                                {% elif request.status == 'in_progress' %}
+                                <span class="badge bg-info">In Progress</span>
+                                {% elif request.status == 'closed' %}
+                                <span class="badge bg-secondary">Closed</span>
+                                {% else %}
+                                <span class="badge bg-warning">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'dashboard:support_detail' request.id %}"
+                                    class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-inbox fa-3x text-muted"></i>
+                </div>
+                <p class="mb-3">You don't have any support requests yet.</p>
+                <a href="{% url 'dashboard:create_support_request' %}" class="btn btn-primary">Create Your First
+                    Request</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-6 mb-4">
+            <div class="support-card h-100">
+                <div class="card-header">
+                    <i class="fas fa-question-circle"></i> Frequently Asked Questions
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item mb-3">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    How long does it take to review my song?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We typically review songs within 2-3 business days after submission.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item mb-3">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    What happens after my song is approved?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Once approved, we'll pitch your song to our network of playlist curators. You'll
+                                    receive updates when your song gets added to playlists.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item mb-3">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Can I submit multiple songs?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                                data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes, you can submit as many songs as you like. Each submission requires a
+                                    separate payment.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    How do I update my payment information?
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                                data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Payment information is collected during the checkout process. We don't store
+                                    your payment details for security reasons.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="support-card h-100">
+                <div class="card-header">
+                    <i class="fas fa-paper-plane"></i> Contact Us
+                </div>
+                <div class="card-body">
+                    <p>Need immediate assistance? You can reach our support team through these channels:</p>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Email Support</h5>
+                            <p><a href="mailto:support@plugtoplaylists.com">support@plugtoplaylists.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Live Chat</h5>
+                            <p>Available Monday-Friday, 9am-5pm</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h5>Phone Support</h5>
+                            <p>+1 (800) 123-4567</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{% url 'dashboard:create_support_request' %}" class="btn btn-primary w-100">
+                            <i class="fas fa-headset me-2"></i> Create New Support Request
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'dashboard:home' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

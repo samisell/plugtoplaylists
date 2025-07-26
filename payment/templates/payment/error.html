@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment Error | PlugToPlaylists{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* Error Page Styles */
+    .error-section {
+        background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%),
+            url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        color: white;
+        padding: 4rem 0;
+    }
+
+    .error-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(26, 26, 26, 0.95);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(244, 67, 54, 0.3);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .error-header {
+        background: linear-gradient(45deg, #F44336, #FF5722);
+        padding: 1.5rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .error-icon {
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #F44336;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .error-header h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .error-body {
+        padding: 2rem;
+    }
+
+    .error-message {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .error-message h3 {
+        color: #F44336;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .error-message p {
+        color: #cccccc;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .error-details {
+        background: rgba(244, 67, 54, 0.1);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(244, 67, 54, 0.2);
+    }
+
+    .error-details h4 {
+        color: #F44336;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        border-bottom: 1px solid rgba(244, 67, 54, 0.2);
+        padding-bottom: 0.5rem;
+    }
+
+    .error-details p {
+        color: #cccccc;
+        line-height: 1.6;
+    }
+
+    .error-code {
+        font-family: monospace;
+        color: #ff6600;
+        font-weight: 600;
+    }
+
+    .suggestions {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .suggestions h4 {
+        color: #ff6600;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+
+    .suggestion-item {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+        align-items: flex-start;
+    }
+
+    .suggestion-icon {
+        color: #ff6600;
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+    }
+
+    .suggestion-text {
+        color: #cccccc;
+        flex: 1;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        border: none;
+        color: white;
+        padding: 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #cccccc;
+        padding: 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .support-contact {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #cccccc;
+        font-size: 0.9rem;
+    }
+
+    .support-email {
+        color: #ff6600;
+        text-decoration: none;
+    }
+
+    .support-email:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .error-container {
+            margin: 1rem;
+        }
+
+        .error-header h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="error-section">
+    <div class="container">
+        <div class="error-container">
+            <div class="error-header">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2>Payment Error</h2>
+            </div>
+            <div class="error-body">
+                <div class="error-message">
+                    <h3>Oops! Something Went Wrong</h3>
+                    <p>We encountered an issue while processing your payment.</p>
+                </div>
+
+                <div class="error-details">
+                    <h4>Error Details</h4>
+                    <p>{{ message }}</p>
+                </div>
+
+                <div class="suggestions">
+                    <h4>What You Can Try</h4>
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-redo"></i></div>
+                        <div class="suggestion-text">Try submitting your song again</div>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-credit-card"></i></div>
+                        <div class="suggestion-text">Check if your payment method is valid and has sufficient funds
+                        </div>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-wifi"></i></div>
+                        <div class="suggestion-text">Ensure you have a stable internet connection</div>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="suggestion-text">Contact our support team if the issue persists</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="{{ redirect_url }}" class="btn-primary">
+                        <i class="fas fa-redo" style="margin-right: 0.5rem;"></i> Try Again
+                    </a>
+                    <a href="{% url 'landing:index' %}" class="btn-secondary">
+                        <i class="fas fa-home" style="margin-right: 0.5rem;"></i> Return to Home
+                    </a>
+                </div>
+
+                <div class="support-contact">
+                    <p>Need help? Contact our support team at <a href="mailto:support@plugtoplaylists.com"
+                            class="support-email">support@plugtoplaylists.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

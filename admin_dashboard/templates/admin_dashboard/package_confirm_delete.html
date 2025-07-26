@@ -1,0 +1,51 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}Delete Package | Admin Dashboard{% endblock %}
+
+{% block header_title %}Delete Package{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                Confirm Deletion
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Warning:</strong> This action cannot be undone.
+                </div>
+                
+                <p>Are you sure you want to delete the following package?</p>
+                
+                <div class="mb-4 p-3 bg-light rounded">
+                    <h5>{{ package.name }}</h5>
+                    <p><strong>Price:</strong> ₦{{ package.price }}</p>
+                    <p><strong>Description:</strong> {{ package.description }}</p>
+                    <p>
+                        <strong>Status:</strong>
+                        {% if package.is_active %}
+                        <span class="badge badge-approved">Active</span>
+                        {% else %}
+                        <span class="badge badge-failed">Inactive</span>
+                        {% endif %}
+                    </p>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'admin_dashboard:package_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i> Delete Package
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

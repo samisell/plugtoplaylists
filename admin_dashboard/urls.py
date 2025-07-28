@@ -4,6 +4,10 @@ from . import views
 app_name = 'admin_dashboard'
 
 urlpatterns = [
+    # Add login URL at the top
+    path('login/', views.admin_login, name='login'),
+    
+    # Existing URLs
     path('', views.dashboard_home, name='home'),
     
     # Song submission management

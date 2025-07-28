@@ -7,326 +7,389 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <style>
-    /* Include all your CSS styles from previous templates */
-    /* Plus these additional styles for landing page sections */
+    /* Reset and Full Width Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
+    html, body {
+        width: 100%;
+        overflow-x: hidden;
+        background-color: #0a0a0a;
+        color: #ffffff;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Full Width Container */
+    .container {
+        width: 100%;
+        max-width: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .content-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* Section Styling */
     section {
+        width: 100vw;
         padding: 6rem 0;
+        position: relative;
+        overflow: hidden;
     }
 
     .section-title {
         text-align: center;
-        margin-bottom: 3rem;
+        margin-bottom: 4rem;
+        position: relative;
+        z-index: 2;
     }
 
     .section-title h2 {
         color: #ff6600;
-        font-size: 2.5rem;
+        font-size: 3rem;
         margin-bottom: 1rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     .section-title p {
         color: #cccccc;
-        font-size: 1.1rem;
-        max-width: 700px;
+        font-size: 1.2rem;
+        max-width: 800px;
         margin: 0 auto;
+        line-height: 1.6;
     }
 
-    /* Hero Section */
+    /* Hero Section with Parallax Effect */
     .hero {
-        background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%),
-            url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+        background: 
+            linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(26, 26, 26, 0.6) 100%),
+            url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
         background-size: cover;
         background-position: center;
+        background-attachment: fixed;
         min-height: 100vh;
         display: flex;
         align-items: center;
         text-align: center;
         color: white;
-        padding-top: 80px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+        z-index: 1;
     }
 
     .hero-content {
-        max-width: 800px;
+        max-width: 900px;
         margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+        animation: fadeInUp 1s ease-out;
     }
 
     .hero h1 {
-        font-size: 3.5rem;
+        font-size: 4rem;
         margin-bottom: 1.5rem;
         line-height: 1.2;
+        background: linear-gradient(45deg, #ff6600, #ff9933);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 800;
     }
 
     .hero p {
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         margin-bottom: 2.5rem;
-        line-height: 1.6;
+        line-height: 1.7;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     }
 
     .hero-buttons {
         display: flex;
-        gap: 1rem;
+        gap: 1.5rem;
         justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Button Styles */
+    .btn {
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        color: white;
+        box-shadow: 0 8px 25px rgba(255, 102, 0, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 102, 0, 0.4);
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: white;
+        border: 2px solid #ff6600;
+    }
+
+    .btn-outline:hover {
+        background: #ff6600;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 102, 0, 0.3);
     }
 
     /* Grow Your Music Section */
     .grow-music {
-        background-color: #1a1a1a;
+        background: 
+            linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%),
+            url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
     }
 
     .features-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 3rem;
+        margin-top: 2rem;
     }
 
     .feature-card {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        padding: 2rem;
-        border: 1px solid rgba(255, 102, 0, 0.2);
-        transition: transform 0.3s ease;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        border: 1px solid rgba(255, 102, 0, 0.3);
+        transition: all 0.4s ease;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 102, 0, 0.1), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .feature-card:hover::before {
+        left: 100%;
     }
 
     .feature-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(255, 102, 0, 0.2);
+        border-color: #ff6600;
     }
 
     .feature-icon {
-        font-size: 2.5rem;
+        font-size: 3.5rem;
         color: #ff6600;
-        margin-bottom: 1.5rem;
+        margin-bottom: 2rem;
+        display: block;
+        text-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
     }
 
     .feature-card h3 {
         color: white;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .feature-card p {
+        color: #cccccc;
+        line-height: 1.6;
+        font-size: 1rem;
     }
 
     /* How It Works Section */
+    .how-it-works {
+        background: 
+            linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.9) 100%),
+            url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
     .steps-container {
-        max-width: 800px;
+        max-width: 1000px;
         margin: 0 auto;
+        padding: 0 2rem;
     }
 
     .step {
         display: flex;
-        gap: 2rem;
-        margin-bottom: 3rem;
+        gap: 3rem;
+        margin-bottom: 4rem;
         align-items: center;
+        position: relative;
+    }
+
+    .step:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .step::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 2px;
+        height: 100px;
+        background: linear-gradient(to bottom, #ff6600, transparent);
+        z-index: 0;
+    }
+
+    .step:last-child::after {
+        display: none;
     }
 
     .step-number {
         background: linear-gradient(45deg, #ff6600, #ff8533);
         color: white;
-        width: 50px;
-        height: 50px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        font-size: 1.5rem;
+        font-size: 2rem;
         flex-shrink: 0;
+        box-shadow: 0 10px 30px rgba(255, 102, 0, 0.4);
+        position: relative;
+        z-index: 2;
     }
 
-    /* Testimonials Section */
-    .testimonials {
-        background-color: #1a1a1a;
-    }
-
-    .testimonial-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-    }
-
-    .testimonial-card {
+    .step-content {
+        flex: 1;
         background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
+        backdrop-filter: blur(10px);
         padding: 2rem;
+        border-radius: 15px;
         border: 1px solid rgba(255, 102, 0, 0.2);
     }
 
-    .testimonial-content {
-        margin-bottom: 1.5rem;
-        font-style: italic;
-    }
-
-    .testimonial-author {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .author-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    /* FAQ Section */
-    .faq-container {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    .faq-item {
+    .step-content h3 {
+        color: white;
         margin-bottom: 1rem;
-        border-bottom: 1px solid rgba(255, 102, 0, 0.2);
-        padding-bottom: 1rem;
-    }
-
-    .faq-question {
-        color: white;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        cursor: pointer;
-    }
-
-    /* Contact Section */
-    .contact-form {
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        display: block;
-        color: #ff6600;
-        margin-bottom: 0.5rem;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 0.75rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 102, 0, 0.3);
-        border-radius: 6px;
-        color: white;
-    }
-
-    .submit-song {
-        background-color: #1a1a1a;
-    }
-
-    .submit-content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 3rem;
-        align-items: center;
-    }
-
-    .submit-text h3 {
-        color: white;
         font-size: 1.5rem;
-        margin-bottom: 1.5rem;
     }
 
-    .submit-text ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .submit-text li {
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
+    .step-content p {
         color: #cccccc;
+        line-height: 1.6;
     }
 
-    .submit-text i {
-        color: #ff6600;
-    }
-
-    .cta-card {
-        background: rgba(255, 102, 0, 0.1);
-        border: 1px solid rgba(255, 102, 0, 0.3);
-        border-radius: 12px;
-        padding: 2rem;
-        text-align: center;
-    }
-
-    .cta-card h3 {
-        color: white;
-        margin-bottom: 1rem;
-    }
-
-    .cta-card p {
-        color: #cccccc;
-        margin-bottom: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-        .submit-content {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* NEW STYLES FOR PRICING SECTION */
+    /* Pricing Section */
     .pricing {
-        background-color: #1a1a1a;
+        background: 
+            linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%),
+            url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
     }
 
     .pricing-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 3rem;
         margin-top: 3rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 2rem;
     }
 
     .pricing-card {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        border: 1px solid rgba(255, 102, 0, 0.2);
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        border-radius: 25px;
+        border: 1px solid rgba(255, 102, 0, 0.3);
         overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: all 0.4s ease;
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 
     .pricing-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(255, 102, 0, 0.3);
+        border-color: #ff6600;
     }
 
     .pricing-card.featured {
         border: 2px solid #ff6600;
-        position: relative;
-        z-index: 1;
         transform: scale(1.05);
+        box-shadow: 0 20px 40px rgba(255, 102, 0, 0.4);
     }
 
     .pricing-card.featured:hover {
-        transform: scale(1.05) translateY(-10px);
+        transform: scale(1.05) translateY(-15px);
     }
 
     .pricing-header {
-        background: linear-gradient(45deg, rgba(255, 102, 0, 0.2), rgba(255, 102, 0, 0.1));
-        padding: 2rem;
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.2), rgba(255, 102, 0, 0.1));
+        padding: 3rem 2rem;
         text-align: center;
         border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+        position: relative;
     }
 
     .pricing-card.featured .pricing-header {
-        background: linear-gradient(45deg, rgba(255, 102, 0, 0.8), rgba(255, 102, 0, 0.6));
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.8), rgba(255, 102, 0, 0.6));
     }
 
     .pricing-name {
         color: white;
-        font-size: 1.8rem;
+        font-size: 2rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
     }
 
     .pricing-price {
-        font-size: 3rem;
+        font-size: 3.5rem;
         font-weight: 800;
         color: #ff6600;
         margin-bottom: 1rem;
@@ -340,28 +403,21 @@
     }
 
     .pricing-currency {
-        font-size: 1.5rem;
+        font-size: 2rem;
         font-weight: 600;
         margin-right: 0.25rem;
         align-self: flex-start;
         margin-top: 0.5rem;
     }
 
-    .pricing-period {
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.7);
-        margin-left: 0.5rem;
-        align-self: flex-end;
-    }
-
     .pricing-description {
         color: #cccccc;
         margin-bottom: 1rem;
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 
     .pricing-features {
-        padding: 2rem;
+        padding: 3rem 2rem;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -377,22 +433,24 @@
     .pricing-feature {
         display: flex;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
         color: #cccccc;
+        font-size: 1rem;
     }
 
     .pricing-feature i {
         color: #ff6600;
-        margin-right: 0.75rem;
-        font-size: 1.1rem;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+        width: 20px;
+    }
+
+    .pricing-feature.disabled i {
+        color: rgba(255, 102, 0, 0.3);
     }
 
     .pricing-feature.disabled {
         color: rgba(204, 204, 204, 0.5);
-    }
-
-    .pricing-feature.disabled i {
-        color: rgba(255, 102, 0, 0.5);
     }
 
     .pricing-cta {
@@ -402,24 +460,374 @@
     .featured-badge {
         position: absolute;
         top: 0;
-        right: 1.5rem;
-        background: #ff6600;
+        right: 2rem;
+        background: linear-gradient(45deg, #ff6600, #ff8533);
         color: white;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         font-weight: 600;
-        padding: 0.5rem 1rem;
-        border-radius: 0 0 8px 8px;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0 0 15px 15px;
         text-transform: uppercase;
         letter-spacing: 1px;
+        box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4);
     }
 
+    /* Testimonials Section */
+    .testimonials {
+        background: 
+            linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.9) 100%),
+            url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .testimonial-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(255, 102, 0, 0.2);
+        border-color: #ff6600;
+    }
+
+    .testimonial-content {
+        margin-bottom: 2rem;
+        font-style: italic;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #cccccc;
+        position: relative;
+    }
+
+    .testimonial-content::before {
+        content: '"';
+        font-size: 4rem;
+        color: #ff6600;
+        position: absolute;
+        top: -1rem;
+        left: -1rem;
+        opacity: 0.3;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .author-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ff6600;
+    }
+
+    .testimonial-author h4 {
+        color: white;
+        margin-bottom: 0.25rem;
+        font-size: 1.1rem;
+    }
+
+    .testimonial-author p {
+        color: #ff6600;
+        font-size: 0.9rem;
+    }
+
+    /* About Section */
+    .about {
+        background: 
+            linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%),
+            url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .about-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        text-align: center;
+    }
+
+    .about-content p {
+        color: #cccccc;
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+    }
+
+    /* Submit Song Section */
+    .submit-song {
+        background: 
+            linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.9) 100%),
+            url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .submit-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .submit-text h3 {
+        color: white;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .submit-text ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .submit-text li {
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: #cccccc;
+        font-size: 1.1rem;
+    }
+
+    .submit-text i {
+        color: #ff6600;
+        font-size: 1.3rem;
+    }
+
+    .cta-card {
+        background: rgba(255, 102, 0, 0.15);
+        backdrop-filter: blur(15px);
+        border: 2px solid rgba(255, 102, 0, 0.4);
+        border-radius: 25px;
+        padding: 3rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .cta-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 20px 40px rgba(255, 102, 0, 0.3);
+    }
+
+    .cta-card h3 {
+        color: white;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+    }
+
+    .cta-card p {
+        color: #cccccc;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* FAQ Section */
+    .faq {
+        background: 
+            linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%),
+            url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .faq-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .faq-item {
+        margin-bottom: 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+        border-color: #ff6600;
+        transform: translateY(-2px);
+    }
+
+    .faq-question {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .faq-question::after {
+        content: '+';
+        color: #ff6600;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-question.active::after {
+        transform: rotate(45deg);
+    }
+
+    .faq-answer {
+        color: #cccccc;
+        line-height: 1.6;
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+
+    /* Contact Section */
+    .contact {
+        background: 
+            linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.9) 100%),
+            url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .contact-form {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-group label {
+        display: block;
+        color: #ff6600;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 102, 0, 0.3);
+        border-radius: 12px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #ff6600;
+        box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+        }
+
+        .submit-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .step {
+            flex-direction: column !important;
+            text-align: center;
+        }
+
+        .step::after {
+            display: none;
+        }
+
         .pricing-card.featured {
             transform: scale(1);
         }
 
         .pricing-card.featured:hover {
             transform: translateY(-10px);
+        }
+
+        .content-wrapper {
+            padding: 0 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .features-grid,
+        .pricing-grid,
+        .testimonial-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
         }
     }
 </style>
@@ -431,14 +839,16 @@
 <!-- Hero Section -->
 <section class="hero" id="home">
     <div class="container">
-        <div class="hero-content">
-            <h1>Grow Your Spotify Audience</h1>
-            <p>Meet the Playlist Booker. We are a marketing agency bridging the gap between legitimate independent
-                curators and artists. We are here to help you grow your music by introducing you to a new Audience on
-                Spotify.</p>
-            <div class="hero-buttons">
-                <a href="#pricing" class="btn btn-primary">View Packages</a>
-                <a href="{% url 'accounts:register' %}" class="btn btn-outline">Get Started</a>
+        <div class="content-wrapper">
+            <div class="hero-content">
+                <h1>Grow Your Spotify Audience</h1>
+                <p>Meet the Playlist Booker. We are a marketing agency bridging the gap between legitimate independent
+                    curators and artists. We are here to help you grow your music by introducing you to a new Audience on
+                    Spotify.</p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="btn btn-primary">View Packages</a>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-outline">Get Started</a>
+                </div>
             </div>
         </div>
     </div>
@@ -447,37 +857,39 @@
 <!-- Grow Your Music Section -->
 <section class="grow-music" id="grow-your-music">
     <div class="container">
-        <div class="section-title">
-            <h2>Grow Your Music</h2>
-            <p>We help independent artists reach new listeners through strategic playlist placements</p>
-        </div>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3>Increase Streams</h3>
-                <p>Get your music in front of thousands of new listeners who will love your sound and keep coming back
-                    for more.</p>
+        <div class="content-wrapper">
+            <div class="section-title">
+                <h2>Grow Your Music</h2>
+                <p>We help independent artists reach new listeners through strategic playlist placements</p>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-users"></i>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Increase Streams</h3>
+                    <p>Get your music in front of thousands of new listeners who will love your sound and keep coming back
+                        for more.</p>
                 </div>
-                <h3>Build Your Fanbase</h3>
-                <p>Connect with real listeners who engage with your music and follow your artist profile for future
-                    releases.</p>
-            </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-check-circle"></i>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Build Your Fanbase</h3>
+                    <p>Connect with real listeners who engage with your music and follow your artist profile for future
+                        releases.</p>
                 </div>
-                <h3>Legitimate Placements</h3>
-                <p>We only work with authentic playlist curators who have real, engaged audiences - no bots or fake
-                    streams.</p>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Legitimate Placements</h3>
+                    <p>We only work with authentic playlist curators who have real, engaged audiences - no bots or fake
+                        streams.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -486,177 +898,181 @@
 <!-- How It Works Section -->
 <section class="how-it-works" id="how-it-works">
     <div class="container">
-        <div class="section-title">
-            <h2>How It Works</h2>
-            <p>Our simple 3-step process to get your music in front of new listeners</p>
-        </div>
-
-        <div class="steps-container">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Submit Your Track</h3>
-                    <p>Upload your best track and tell us about your music. We'll analyze your sound to find the perfect
-                        playlists for your genre.</p>
-                </div>
+        <div class="content-wrapper">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Our simple 3-step process to get your music in front of new listeners</p>
             </div>
 
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>We Pitch To Curators</h3>
-                    <p>Our team personally pitches your music to our network of independent playlist curators who
-                        specialize in your genre.</p>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Submit Your Track</h3>
+                        <p>Upload your best track and tell us about your music. We'll analyze your sound to find the perfect
+                            playlists for your genre.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Get Added To Playlists</h3>
-                    <p>Watch your streams grow as curators add your music to their playlists, exposing you to thousands
-                        of new potential fans.</p>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>We Pitch To Curators</h3>
+                        <p>Our team personally pitches your music to our network of independent playlist curators who
+                            specialize in your genre.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Get Added To Playlists</h3>
+                        <p>Watch your streams grow as curators add your music to their playlists, exposing you to thousands
+                            of new potential fans.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Pricing Section (NEW) -->
+<!-- Pricing Section -->
 <section class="pricing" id="pricing">
     <div class="container">
-        <div class="section-title">
-            <h2>Our Packages</h2>
-            <p>Choose the perfect package for your music promotion needs</p>
-        </div>
-
-        <div class="pricing-grid">
-            <!-- Basic Package -->
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <div class="pricing-name">Basic</div>
-                    <div class="pricing-price">
-                        <span class="pricing-currency">₦</span>
-                        5,000
-                    </div>
-                    <div class="pricing-description">Perfect for new artists testing the waters</div>
-                </div>
-                <div class="pricing-features">
-                    <ul class="pricing-feature-list">
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>1 Song Submission</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>3-5 Playlist Placements</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>1 Month Playlist Guarantee</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Basic Performance Report</span>
-                        </li>
-                        <li class="pricing-feature disabled">
-                            <i class="fas fa-times-circle"></i>
-                            <span>Priority Pitching</span>
-                        </li>
-                        <li class="pricing-feature disabled">
-                            <i class="fas fa-times-circle"></i>
-                            <span>Featured Artist Profile</span>
-                        </li>
-                    </ul>
-                    <div class="pricing-cta">
-                        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
-                    </div>
-                </div>
+        <div class="content-wrapper">
+            <div class="section-title">
+                <h2>Our Packages</h2>
+                <p>Choose the perfect package for your music promotion needs</p>
             </div>
 
-            <!-- Premium Package -->
-            <div class="pricing-card featured">
-                <div class="featured-badge">Most Popular</div>
-                <div class="pricing-header">
-                    <div class="pricing-name">Premium</div>
-                    <div class="pricing-price">
-                        <span class="pricing-currency">₦</span>
-                        15,000
+            <div class="pricing-grid">
+                <!-- Basic Package -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Basic</div>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">₦</span>
+                            5,000
+                        </div>
+                        <div class="pricing-description">Perfect for new artists testing the waters</div>
                     </div>
-                    <div class="pricing-description">Best value for serious artists</div>
-                </div>
-                <div class="pricing-features">
-                    <ul class="pricing-feature-list">
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>1 Song Submission</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>10-15 Playlist Placements</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>3 Months Playlist Guarantee</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Detailed Performance Analytics</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Priority Pitching</span>
-                        </li>
-                        <li class="pricing-feature disabled">
-                            <i class="fas fa-times-circle"></i>
-                            <span>Featured Artist Profile</span>
-                        </li>
-                    </ul>
-                    <div class="pricing-cta">
-                        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
+                    <div class="pricing-features">
+                        <ul class="pricing-feature-list">
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>1 Song Submission</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>3-5 Playlist Placements</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>1 Month Playlist Guarantee</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Basic Performance Report</span>
+                            </li>
+                            <li class="pricing-feature disabled">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Priority Pitching</span>
+                            </li>
+                            <li class="pricing-feature disabled">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Featured Artist Profile</span>
+                            </li>
+                        </ul>
+                        <div class="pricing-cta">
+                            <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Pro Package -->
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <div class="pricing-name">Professional</div>
-                    <div class="pricing-price">
-                        <span class="pricing-currency">₦</span>
-                        30,000
+                <!-- Premium Package -->
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <div class="pricing-name">Premium</div>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">₦</span>
+                            15,000
+                        </div>
+                        <div class="pricing-description">Best value for serious artists</div>
                     </div>
-                    <div class="pricing-description">Maximum exposure for established artists</div>
+                    <div class="pricing-features">
+                        <ul class="pricing-feature-list">
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>1 Song Submission</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>10-15 Playlist Placements</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>3 Months Playlist Guarantee</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Detailed Performance Analytics</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Priority Pitching</span>
+                            </li>
+                            <li class="pricing-feature disabled">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Featured Artist Profile</span>
+                            </li>
+                        </ul>
+                        <div class="pricing-cta">
+                            <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="pricing-features">
-                    <ul class="pricing-feature-list">
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>2 Song Submissions</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>20+ Playlist Placements</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>6 Months Playlist Guarantee</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Advanced Performance Analytics</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Priority Pitching</span>
-                        </li>
-                        <li class="pricing-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Featured Artist Profile</span>
-                        </li>
-                    </ul>
-                    <div class="pricing-cta">
-                        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
+
+                <!-- Pro Package -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Professional</div>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">₦</span>
+                            30,000
+                        </div>
+                        <div class="pricing-description">Maximum exposure for established artists</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul class="pricing-feature-list">
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>2 Song Submissions</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>20+ Playlist Placements</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>6 Months Playlist Guarantee</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Advanced Performance Analytics</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Priority Pitching</span>
+                            </li>
+                            <li class="pricing-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Featured Artist Profile</span>
+                            </li>
+                        </ul>
+                        <div class="pricing-cta">
+                            <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Get Started</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -667,50 +1083,52 @@
 <!-- Testimonials Section -->
 <section class="testimonials" id="testimonials">
     <div class="container">
-        <div class="section-title">
-            <h2>What Our Clients Say</h2>
-            <p>Reviews from artists who have grown their audience with PlugToPlaylists</p>
-        </div>
-
-        <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-content">
-                    "PlugToPlaylists helped me get my music on 5 different playlists and I saw my monthly listeners grow
-                    from 200 to over 5,000 in just one month!"
-                </div>
-                <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Artist" class="author-avatar">
-                    <div>
-                        <h4>Sarah J.</h4>
-                        <p>Indie Pop Artist</p>
-                    </div>
-                </div>
+        <div class="content-wrapper">
+            <div class="section-title">
+                <h2>What Our Clients Say</h2>
+                <p>Reviews from artists who have grown their audience with PlugToPlaylists</p>
             </div>
 
-            <div class="testimonial-card">
-                <div class="testimonial-content">
-                    "As an independent rapper, it's hard to get noticed. Thanks to PlugToPlaylists, my latest single got
-                    added to some great hip-hop playlists and now I'm getting approached by labels."
-                </div>
-                <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Artist" class="author-avatar">
-                    <div>
-                        <h4>Marcus T.</h4>
-                        <p>Hip-Hop Artist</p>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        PlugToPlaylists helped me get my music on 5 different playlists and I saw my monthly listeners grow
+                        from 200 to over 5,000 in just one month!
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Artist" class="author-avatar">
+                        <div>
+                            <h4>Sarah J.</h4>
+                            <p>Indie Pop Artist</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="testimonial-card">
-                <div class="testimonial-content">
-                    "I was skeptical at first, but the results speak for themselves. My streams increased by 300% and
-                    I've gained hundreds of new followers who actually engage with my music."
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        As an independent rapper, it's hard to get noticed. Thanks to PlugToPlaylists, my latest single got
+                        added to some great hip-hop playlists and now I'm getting approached by labels.
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Artist" class="author-avatar">
+                        <div>
+                            <h4>Marcus T.</h4>
+                            <p>Hip-Hop Artist</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Artist" class="author-avatar">
-                    <div>
-                        <h4>Elena R.</h4>
-                        <p>Electronic Producer</p>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        I was skeptical at first, but the results speak for themselves. My streams increased by 300% and
+                        I've gained hundreds of new followers who actually engage with my music.
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Artist" class="author-avatar">
+                        <div>
+                            <h4>Elena R.</h4>
+                            <p>Electronic Producer</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -721,22 +1139,24 @@
 <!-- About Us Section -->
 <section class="about" id="about">
     <div class="container">
-        <div class="section-title">
-            <h2>About Us</h2>
-            <p>Our mission is to help independent artists succeed</p>
-        </div>
+        <div class="content-wrapper">
+            <div class="section-title">
+                <h2>About Us</h2>
+                <p>Our mission is to help independent artists succeed</p>
+            </div>
 
-        <div class="about-content">
-            <p>PlugToPlaylists was founded by music industry professionals who saw how difficult it was for talented
-                independent artists to get their music heard. We've built relationships with hundreds of legitimate
-                playlist curators across all genres to create a bridge between creators and audiences.</p>
+            <div class="about-content">
+                <p>PlugToPlaylists was founded by music industry professionals who saw how difficult it was for talented
+                    independent artists to get their music heard. We've built relationships with hundreds of legitimate
+                    playlist curators across all genres to create a bridge between creators and audiences.</p>
 
-            <p>Unlike other services, we don't promise overnight success or fake streams. We provide real opportunities
-                for your music to be discovered by people who will genuinely appreciate your sound and become long-term
-                fans.</p>
+                <p>Unlike other services, we don't promise overnight success or fake streams. We provide real opportunities
+                    for your music to be discovered by people who will genuinely appreciate your sound and become long-term
+                    fans.</p>
 
-            <p>Our team carefully reviews every submission to ensure we only pitch high-quality music to our curator
-                network, maintaining the integrity of both the playlists and your artist profile.</p>
+                <p>Our team carefully reviews every submission to ensure we only pitch high-quality music to our curator
+                    network, maintaining the integrity of both the playlists and your artist profile.</p>
+            </div>
         </div>
     </div>
 </section>
@@ -744,27 +1164,29 @@
 <!-- Submit Your Song Section -->
 <section class="submit-song" id="submit-song">
     <div class="container">
-        <div class="section-title">
-            <h2>Ready to Grow Your Audience?</h2>
-            <p>Submit your song to be considered for placement in our network of playlists</p>
-        </div>
-
-        <div class="submit-content">
-            <div class="submit-text">
-                <h3>Why Submit Through Us?</h3>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> Direct access to legitimate playlist curators</li>
-                    <li><i class="fas fa-check-circle"></i> Personalized pitching for your genre</li>
-                    <li><i class="fas fa-check-circle"></i> No bots or fake streams - real listeners only</li>
-                    <li><i class="fas fa-check-circle"></i> Transparent reporting on placements</li>
-                </ul>
+        <div class="content-wrapper">
+            <div class="section-title">
+                <h2>Ready to Grow Your Audience?</h2>
+                <p>Submit your song to be considered for placement in our network of playlists</p>
             </div>
 
-            <div class="submit-cta">
-                <div class="cta-card">
-                    <h3>Get Started Today</h3>
-                    <p>Submit your best track for consideration in our curator network</p>
-                    <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Submit Your Song</a>
+            <div class="submit-content">
+                <div class="submit-text">
+                    <h3>Why Submit Through Us?</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Direct access to legitimate playlist curators</li>
+                        <li><i class="fas fa-check-circle"></i> Personalized pitching for your genre</li>
+                        <li><i class="fas fa-check-circle"></i> No bots or fake streams - real listeners only</li>
+                        <li><i class="fas fa-check-circle"></i> Transparent reporting on placements</li>
+                    </ul>
+                </div>
+
+                <div class="submit-cta">
+                    <div class="cta-card">
+                        <h3>Get Started Today</h3>
+                        <p>Submit your best track for consideration in our curator network</p>
+                        <a href="{% url 'landing:submit_song' %}" class="btn btn-primary">Submit Your Song</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -774,46 +1196,48 @@
 <!-- FAQ Section -->
 <section class="faq" id="faq">
     <div class="container">
-        <div class="section-title">
-            <h2>Frequently Asked Questions</h2>
-            <p>Everything you need to know about our service</p>
-        </div>
-
-        <div class="faq-container">
-            <div class="faq-item">
-                <div class="faq-question">How long does it take to get placed on playlists?</div>
-                <div class="faq-answer">Most placements happen within 2-3 weeks of submission. Our curators take time to
-                    listen and consider each track carefully.</div>
+        <div class="content-wrapper">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about our service</p>
             </div>
 
-            <div class="faq-item">
-                <div class="faq-question">What genres do you work with?</div>
-                <div class="faq-answer">We work with all major genres including pop, hip-hop, electronic, rock, R&B, and
-                    more. We have specialized curators for niche genres as well.</div>
-            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">How long does it take to get placed on playlists?</div>
+                    <div class="faq-answer">Most placements happen within 2-3 weeks of submission. Our curators take time to
+                        listen and consider each track carefully.</div>
+                </div>
 
-            <div class="faq-item">
-                <div class="faq-question">Can I submit multiple tracks?</div>
-                <div class="faq-answer">Yes! We offer packages for multiple track submissions. We recommend focusing on
-                    your strongest single first.</div>
-            </div>
+                <div class="faq-item">
+                    <div class="faq-question">What genres do you work with?</div>
+                    <div class="faq-answer">We work with all major genres including pop, hip-hop, electronic, rock, R&B, and
+                        more. We have specialized curators for niche genres as well.</div>
+                </div>
 
-            <div class="faq-item">
-                <div class="faq-question">How do you ensure playlist quality?</div>
-                <div class="faq-answer">We vet all curators and only work with those who have real, engaged audiences
-                    and follow Spotify's guidelines.</div>
-            </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I submit multiple tracks?</div>
+                    <div class="faq-answer">Yes! We offer packages for multiple track submissions. We recommend focusing on
+                        your strongest single first.</div>
+                </div>
 
-            <div class="faq-item">
-                <div class="faq-question">Do I need to create an account to submit my song?</div>
-                <div class="faq-answer">No, you can submit your song without creating an account, but we recommend
-                    signing up for a better experience and to track your submissions.</div>
-            </div>
+                <div class="faq-item">
+                    <div class="faq-question">How do you ensure playlist quality?</div>
+                    <div class="faq-answer">We vet all curators and only work with those who have real, engaged audiences
+                        and follow Spotify's guidelines.</div>
+                </div>
 
-            <div class="faq-item">
-                <div class="faq-question">What payment methods do you accept?</div>
-                <div class="faq-answer">We accept credit cards, debit cards, bank transfers, and mobile payments through
-                    our secure payment processor.</div>
+                <div class="faq-item">
+                    <div class="faq-question">Do I need to create an account to submit my song?</div>
+                    <div class="faq-answer">No, you can submit your song without creating an account, but we recommend
+                        signing up for a better experience and to track your submissions.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What payment methods do you accept?</div>
+                    <div class="faq-answer">We accept credit cards, debit cards, bank transfers, and mobile payments through
+                        our secure payment processor.</div>
+                </div>
             </div>
         </div>
     </div>
@@ -822,30 +1246,32 @@
 <!-- Contact Section -->
 <section class="contact" id="contact">
     <div class="container">
-        <div class="section-title">
-            <h2>Contact Us</h2>
-            <p>Have questions? Get in touch with our team</p>
-        </div>
+        <div class="content-wrapper">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Have questions? Get in touch with our team</p>
+            </div>
 
-        <div class="contact-form">
-            <form>
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" required>
-                </div>
+            <div class="contact-form">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" required>
-                </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="message">Your Message</label>
-                    <textarea id="message" rows="5" required></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" rows="5" required></textarea>
+                    </div>
 
-                <button type="submit" class="btn btn-primary">Send Message</button>
-            </form>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
         </div>
     </div>
 </section>
@@ -853,11 +1279,23 @@
 {% include 'includes/footer.html' %}
 
 <script>
-    // Simple FAQ toggle functionality
+    // Enhanced FAQ toggle functionality
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
             const answer = question.nextElementSibling;
-            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            const isActive = question.classList.contains('active');
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.classList.remove('active');
+                q.nextElementSibling.style.display = 'none';
+            });
+            
+            // Toggle current item
+            if (!isActive) {
+                question.classList.add('active');
+                answer.style.display = 'block';
+            }
         });
     });
 
@@ -875,25 +1313,83 @@
                     top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
-
+            }
         });
     });
 
-    // Initialize FAQ items as hidden by default
+    // Parallax effect for background images
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const sections = document.querySelectorAll('section');
+        
+        sections.forEach(section => {
+            const speed = 0.5;
+            const yPos = -(scrolled * speed);
+            section.style.backgroundPosition = `center ${yPos}px`;
+        });
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all feature cards, pricing cards, and testimonial cards
+    document.querySelectorAll('.feature-card, .pricing-card, .testimonial-card, .step').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Initialize on DOM content loaded
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize FAQ items as hidden by default
         document.querySelectorAll('.faq-answer').forEach(answer => {
             answer.style.display = 'none';
         });
         
-        // Make sure pricing section links are working
+        // Package selection tracking
         document.querySelectorAll('.pricing-cta .btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
-                // You can add tracking or analytics here if needed
                 console.log('Package selected:', this.closest('.pricing-card').querySelector('.pricing-name').textContent);
-                // The link will naturally redirect to the submission page
             });
         });
+
+        // Add loading animation
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease-in-out';
+        
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 100);
+    });
+
+    // Contact form handling
+    document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(this);
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+        
+        // Simple validation
+        if (!name || !email || !message) {
+            alert('Please fill in all fields');
+            return;
+        }
+        
+        // Here you would typically send the data to your Django backend
+        alert('Thank you for your message! We\'ll get back to you soon.');
+        this.reset();
     });
 </script>
-{% endblock %} 
-      
+{% endblock %}

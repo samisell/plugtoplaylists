@@ -1,10 +1,16 @@
+{% load static %}
+
+
+
 <footer class="footer">
     <div class="container">
         <div class="footer-grid">
             <div class="footer-col">
                 <div class="logo">
-                    <span class="logo-icon">PTP</span>
-                    <span class="logo-text">PlugToPlaylists</span>
+                    <!-- <span class="logo-icon">PTP</span>
+                    <span class="logo-text">PlugToPlaylists</span> -->
+                    <img src="{% static 'image/PTP-mini.png' %}" alt="PlugToPlaylists Logo" class="logo-image img-fluid"
+                        style="width: fit-content; height: 50px;">
                 </div>
                 <p class="footer-text">
                     Bridging the gap between independent curators and artists to grow your music career.
@@ -16,7 +22,7 @@
                     <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
-            
+
             <div class="footer-col">
                 <h3 class="footer-title">Quick Links</h3>
                 <a href="#grow-your-music" class="footer-link">Grow Your Music</a>
@@ -24,7 +30,7 @@
                 <a href="#testimonials" class="footer-link">Testimonials</a>
                 <a href="#about" class="footer-link">About Us</a>
             </div>
-            
+
             <div class="footer-col">
                 <h3 class="footer-title">Support</h3>
                 <a href="#faq" class="footer-link">FAQ</a>
@@ -32,7 +38,7 @@
                 <a href="#" class="footer-link">Privacy Policy</a>
                 <a href="#" class="footer-link">Terms of Service</a>
             </div>
-            
+
             <div class="footer-col">
                 <h3 class="footer-title">Newsletter</h3>
                 <p class="footer-text">Subscribe for music growth tips and updates</p>
@@ -42,7 +48,7 @@
                 </form>
             </div>
         </div>
-        
+
         <div class="footer-bottom">
             <p>&copy; {% now "Y" %} PlugToPlaylists. All rights reserved.</p>
         </div>
@@ -56,25 +62,25 @@
         padding: 4rem 0 2rem;
         border-top: 1px solid rgba(255, 102, 0, 0.2);
     }
-    
+
     .footer-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 2rem;
         margin-bottom: 3rem;
     }
-    
+
     .footer-col {
         display: flex;
         flex-direction: column;
     }
-    
+
     .logo {
         display: flex;
         align-items: center;
         margin-bottom: 1.5rem;
     }
-    
+
     .logo-icon {
         background: linear-gradient(45deg, #ff6600, #ff8533);
         color: white;
@@ -83,40 +89,40 @@
         border-radius: 6px;
         margin-right: 0.75rem;
     }
-    
+
     .logo-text {
         color: white;
         font-size: 1.25rem;
         font-weight: 600;
     }
-    
+
     .footer-text {
         margin-bottom: 1.5rem;
         line-height: 1.6;
     }
-    
+
     .social-links {
         display: flex;
         gap: 1rem;
     }
-    
+
     .social-link {
         color: #cccccc;
         font-size: 1.25rem;
         transition: color 0.3s ease;
     }
-    
+
     .social-link:hover {
         color: #ff6600;
     }
-    
+
     .footer-title {
         color: white;
         font-size: 1.1rem;
         margin-bottom: 1.5rem;
         font-weight: 600;
     }
-    
+
     .footer-link {
         color: #cccccc;
         text-decoration: none;
@@ -124,17 +130,17 @@
         display: block;
         transition: color 0.3s ease;
     }
-    
+
     .footer-link:hover {
         color: #ff6600;
     }
-    
+
     .newsletter-form {
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
     }
-    
+
     .newsletter-form input {
         padding: 0.75rem;
         background: rgba(255, 255, 255, 0.05);
@@ -142,11 +148,11 @@
         border-radius: 6px;
         color: white;
     }
-    
+
     .newsletter-form input::placeholder {
         color: #888888;
     }
-    
+
     .footer-bottom {
         text-align: center;
         padding-top: 2rem;

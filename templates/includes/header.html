@@ -1,9 +1,13 @@
+{% load static %}
+
 <header class="header">
     <div class="container">
         <nav class="navbar">
             <a href="{% url 'landing:index' %}" class="logo">
-                <span class="logo-icon">PTP</span>
-                <span class="logo-text">PlugToPlaylists</span>
+                <!-- <span class="logo-icon">PTP</span> -->
+                <img src="{% static 'image/PTP-mini.png' %}" alt="PlugToPlaylists Logo" class="logo-image img-fluid"
+                    style="width: fit-content; height: 50px;">
+                <!-- <span class=" logo-text">PlugToPlaylists</span> -->
             </a>
 
             <div class="nav-links">
